@@ -1,9 +1,14 @@
 using CampusOrdering.Controllers;
+using CampusOrdering.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<OrderingContext>(options =>
+    options.UseSqlServer("Server=DESKTOP-TGLK3IK\\SQLEXPRESS;Database=FoodOrderingDB;Trusted_Connection=True;TrustServerCertificate=True;"));
 
 var app = builder.Build();
 
