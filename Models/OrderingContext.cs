@@ -5,7 +5,7 @@ namespace CampusOrdering.Models
     public class OrderingContext : DbContext
     {
         public DbSet<Restaurant> Restaurants { get; set; }
-        public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<MenuItem> MenuItems{ get; set; }
 
         public OrderingContext(DbContextOptions options) : base(options)
         {

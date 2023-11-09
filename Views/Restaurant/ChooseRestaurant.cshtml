@@ -1,0 +1,13 @@
+﻿@model List<Restaurant>  
+
+<h1>Choose a Restaurant</h1>
+
+<div class="restaurant-list">
+    @foreach (var restaurant in Model)
+    {
+        <a href="@Url.Action("Menu", "MenuItem", new { restID = restaurant.Id })">
+                <img src="@restaurant.LogoUrl" alt="@restaurant.Name" width="auto" height="300"/>
+                <p>@restaurant.Name</p>
+        </a>
+    }
+</div>

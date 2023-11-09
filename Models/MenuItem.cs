@@ -1,4 +1,5 @@
-﻿namespace CampusOrdering.Models
+﻿using System.Web;
+namespace CampusOrdering.Models
 {
     public class MenuItem
     {
@@ -7,5 +8,6 @@
         public decimal Price { get; set; }
         public int RestaurantId { get; set; }
         public string ImageUrl { get; set; }
+        public Restaurant Restaurant { get; set; }
     }
 }

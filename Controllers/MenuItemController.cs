@@ -1,19 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using CampusOrdering.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace CampusOrdering.Controllers
 {
     public class MenuItemController : Controller
     {
-        private ECartDBEntities eCartDBEntities
+        private readonly OrderingContext _context;
 
-        public MenuItemController()
+        public MenuItemController(OrderingContext context)
         {
-
+            _context = context;
         }
 
-
-        public IActionResult Index()
+        public IActionResult Menu(int restID)
         {
-            return View();
+            var restaurant = _context.Restaurants
+                .Include(r => r.Menu)
+                .FirstOrDefault(r => r.Id == restID);
+            if (restaurant == null)
+                return NotFound();
+            return View(restaurant);
         }
     }
 }

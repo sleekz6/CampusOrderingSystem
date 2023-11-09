@@ -1,0 +1,14 @@
+﻿@model Restaurant
+
+<h2>Menu for @Model.Name</h2>
+
+<ul>
+    @foreach (var menuItem in Model.Menu)
+    {
+        <li>
+            <strong>@menuItem.ItemName</strong>
+            <img src="@menuItem.ImageUrl" alt="@menuItem.ItemName" height="300" width="auto"/>
+            <p>Price: $@menuItem.Price</p>
+        </li>
+    }
+</ul>
