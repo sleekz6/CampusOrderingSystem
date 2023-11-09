@@ -1,14 +1,113 @@
 ﻿@model Restaurant
+<head>
+    <link rel="stylesheet" href="../css/menu.css" />
+</head>
 
+<div class="center-content">
 <h2>Menu for @Model.Name</h2>
+
+<!-- Modal -->
+<div class="modal">
+<div class="modal fade" id="itemDetailsModal" tabindex="-1" role="dialog" aria-labelledby="itemDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="itemDetailsModalLabel">Item Details</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="itemDetailsBody">
+                <!-- Content will be dynamically added here using JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <!-- Buttons to change size -->
+                <button type="button" class="btn btn-primary" onclick="changeSize('small')">Small</button>
+                <button type="button" class="btn btn-primary" onclick="changeSize('medium')">Medium</button>
+                <button type="button" class="btn btn-primary" onclick="changeSize('large')">Large</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <ul>
     @foreach (var menuItem in Model.Menu)
     {
-        <li>
-            <strong>@menuItem.ItemName</strong>
-            <img src="@menuItem.ImageUrl" alt="@menuItem.ItemName" height="300" width="auto"/>
-            <p>Price: $@menuItem.Price</p>
-        </li>
+        <div class="menu-item">
+            <img src="@menuItem.ImageUrl" alt="@menuItem.ItemName" width="auto" height="200" class="menu-item-image" data-name="@menuItem.ItemName" data-calories="@menuItem.Calories" data-price="@menuItem.Price" data-size="@menuItem.Size" />
+        </div>
     }
 </ul>
+
+</div>
+
+<!-- Include jQuery and Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var $ = jQuery.noConflict();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // JavaScript to handle the click event and populate modal content
+        var name = "";
+        var calories = 0;
+        var price = 0.0;
+        var size = "";
+        var newPrice = 0.0;
+        var newCal = 0;
+    
+    $(document).ready(function () {
+        $('.menu-item-image').on('click', function () {
+            name = $(this).data('name');
+            calories = $(this).data('calories');
+            newCal = calories;
+            price = parseFloat($(this).data('price'));
+            newPrice = price;
+            size = $(this).data('size');
+
+            // Update modal content dynamically
+            updateModalContent();
+
+            // Show the modal
+            $('#itemDetailsModal').modal('show');
+        });
+    });
+
+    function updateModalContent() {
+        $('#itemDetailsBody').html(`
+                <p><strong>${name}</strong></p>
+                <p>Calories: ${newCal}</p>
+                <p>Price: $${newPrice.toFixed(2)}</p>
+                <p>Size: ${size}</p>
+            `);
+    }
+
+    function changeSize(newSize) {
+        var baseCal = calories;
+        var medCal = baseCal * 1.2;
+        var largeCal = baseCal * 1.4;
+        var basePrice = price;
+        var medPrice = basePrice * 1.2;
+        var largePrice = basePrice * 1.4;
+        if (newSize === 'small') {
+            newPrice = basePrice;
+            newCal = baseCal;
+        } else if (newSize === 'medium') {
+            newPrice = medPrice;
+            newCal = medCal;
+        } else if (newSize === 'large') {
+            newPrice = largePrice; 
+            newCal = largeCal;
+        }
+
+        // Update current size
+        size = newSize;
+
+        // Update modal content dynamically
+        updateModalContent();
+    }
+
+</script>

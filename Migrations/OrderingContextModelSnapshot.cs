@@ -29,6 +29,9 @@ namespace CampusOrdering.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Calories")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -43,7 +46,13 @@ namespace CampusOrdering.Migrations
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("MenuItem", (string)null);
                 });
@@ -67,6 +76,22 @@ namespace CampusOrdering.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Restaurant", (string)null);
+                });
+
+            modelBuilder.Entity("CampusOrdering.Models.MenuItem", b =>
+                {
+                    b.HasOne("CampusOrdering.Models.Restaurant", "Restaurant")
+                        .WithMany("Menu")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("CampusOrdering.Models.Restaurant", b =>
+                {
+                    b.Navigation("Menu");
                 });
 #pragma warning restore 612, 618
         }

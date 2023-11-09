@@ -1,0 +1,32 @@
+﻿.center-content {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust to your preference */
+}
+
+.restaurant-list {
+    display: contents;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust column width as needed */
+    gap: 20px; /* Adjust gap between items */
+    justify-content: center;
+}
+
+/* Style for menu items */
+.menu-item {
+    text-align: center;
+
+
+}
+
+    .menu-item img {
+        max-width: 100%; /* Set maximum width to 100% of the container */
+        max-height: 200px; /* Set maximum height as needed */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+/* Style for modal */
+.modal {
+    text-align: center;
+}

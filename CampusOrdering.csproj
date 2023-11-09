@@ -8,14 +8,21 @@
 
   <ItemGroup>
     <Compile Remove="NewFolder\**" />
+    <Compile Remove="Views\NewFolder1\**" />
+    <Compile Remove="Views\NewFolder\**" />
     <Content Remove="NewFolder\**" />
+    <Content Remove="Views\NewFolder1\**" />
+    <Content Remove="Views\NewFolder\**" />
     <EmbeddedResource Remove="NewFolder\**" />
+    <EmbeddedResource Remove="Views\NewFolder1\**" />
+    <EmbeddedResource Remove="Views\NewFolder\**" />
     <None Remove="NewFolder\**" />
+    <None Remove="Views\NewFolder1\**" />
+    <None Remove="Views\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\NewFolder1\" />
-    <Folder Include="Views\NewFolder\" />
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
@@ -26,7 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="bootstrap" Version="5.3.2" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="jQuery" Version="3.7.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13">
