@@ -18,13 +18,6 @@ namespace CampusOrdering.Controllers
         public IActionResult Index()
         {
             List<Restaurant> restaurants = _context.Restaurants.ToList();
-            Restaurant einstein = new Restaurant
-            {
-                Name = "Einstein Bros. Bagels",
-                LogoUrl = "~/images/einstein_logo.png",
-                // Set other properties as needed
-            };
-            _context.Restaurants.Add(einstein);
             _context.SaveChanges();
             return View(restaurants);
         }

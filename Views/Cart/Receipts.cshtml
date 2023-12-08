@@ -1,0 +1,33 @@
+﻿<!-- Views/Cart/Receipts.cshtml -->
+@model List<Receipt>
+
+<h2>Your Receipts</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Receipt ID</th>
+                <th>Purchase Date/Time</th>
+                <th>Total Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var receipt in Model)
+            {
+                <tr>
+                    <td>@receipt.ReceiptId</td>
+                    <td>@receipt.PurchaseDateTime</td>
+                    <td>@receipt.TotalPrice</td>
+                    <td><a href="@Url.Action("ViewReceipt", "Cart", new { receiptId = receipt.ReceiptId })">View Details</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No receipts available.</p>
+}

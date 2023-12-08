@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<OrderingContext>(options =>
     options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=FoodOrderingDB;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
-
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -26,17 +26,18 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
-void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-{
-    app.UseStaticFiles();
-}
-
 app.UseAuthorization();
+
+app.UseSession(); 
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "cart",
+    pattern: "{controller=Cart}/{action=Index}/{id?}");
 
 app.Run();

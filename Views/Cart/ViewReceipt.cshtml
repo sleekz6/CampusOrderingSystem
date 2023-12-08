@@ -1,0 +1,31 @@
+﻿@model Receipt
+
+<h2>Receipt Details</h2>
+
+@if (Model != null)
+{
+    <dl>
+        <dt>Receipt ID:</dt>
+        <dd>@Model.ReceiptId</dd>
+
+        <dt>Purchase Date/Time:</dt>
+        <dd>@Model.PurchaseDateTime</dd>
+
+        <dt>Total Price:</dt>
+        <dd>@Model.TotalPrice</dd>
+
+        <dt>Purchased Items:</dt>
+        <dd>
+            <ul>
+                @foreach (var item in Model.PurchasedItems)
+                {
+                    <li>@item.Quantity x @item.MenuItemName ($@item.Price each)</li>
+                }
+            </ul>
+        </dd>
+    </dl>
+}
+else
+{
+    <p>Receipt not found.</p>
+}

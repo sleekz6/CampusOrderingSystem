@@ -25,6 +25,7 @@
                 <button type="button" class="btn btn-primary" onclick="changeSize('small')">Small</button>
                 <button type="button" class="btn btn-primary" onclick="changeSize('medium')">Medium</button>
                 <button type="button" class="btn btn-primary" onclick="changeSize('large')">Large</button>
+                <button id="addToCartBtn" class="btn btn-primary">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -58,6 +59,8 @@
         var size = "";
         var newPrice = 0.0;
         var newCal = 0;
+        var cart = [];
+        var menuItemId = 0;
     
     $(document).ready(function () {
         $('.menu-item-image').on('click', function () {
@@ -67,12 +70,34 @@
             price = parseFloat($(this).data('price'));
             newPrice = price;
             size = $(this).data('size');
+            menuItemId = $(this).data('id');
 
             // Update modal content dynamically
             updateModalContent();
 
             // Show the modal
             $('#itemDetailsModal').modal('show');
+        });
+
+        $('#addToCartBtn').on('click', function () {
+            var menuItemId = $(this).data('id');
+            var menuItemName = $(this).data('name');
+
+            var cartItem = {
+                MenuItemId:menuItemId,
+                MenuItemName: name,
+                Price: newPrice,
+                Size: size,
+                Quantity: 1
+            };
+
+            $.post('@Url.Action("AddToCart", "Cart")', cartItem, function (data) {
+                console.log(data);
+            });
+
+            cart.push(cartItem);
+
+            $('#itemDetailsModal').modal('hide');
         });
     });
 
