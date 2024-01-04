@@ -63,7 +63,7 @@
 <div class="container">
     <h2>Edit Your Settings</h2>
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Save", "Customer"))
     {
         @Html.AntiForgeryToken()
 
@@ -87,8 +87,10 @@
             @Html.EditorFor(model => model.Password, new { @type = "password" })
         </div>
 
-        <input type="submit" value="Save Changes" class="btn-primary" />
-    }
+       
+    
 
-    <a asp-action="Settings" class="btn-back">Back to Settings</a>
+       @Html.HiddenFor(m => m.Id)
+    <button type="submit" class="btn-primary">Save</button>
+    }
 </div>
