@@ -1,6 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @model CampusOrdering.Models.Customer
 
 <style>
@@ -50,6 +48,7 @@
 <div class="container">
     <h2>Customer Details</h2>
 
+    
     <dl class="dl-horizontal">
         <dt>Name:</dt>
         <dd>@Model.Name</dd>
@@ -60,4 +59,6 @@
     </dl>
 
     <a asp-action="Edit" asp-route-customerId="@Model.Id" class="btn-edit">Edit</a>
+   @* <a asp-area="" asp-controller="Customer" asp-action="Edit" asp-route-customerId="@Model.Id">Account</a> *@
+    }
 </div>
