@@ -8,6 +8,7 @@ namespace CampusOrdering.Models
         public DbSet<MenuItem> MenuItems{ get; set; }
         public DbSet<Receipt> Receipts { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public OrderingContext(DbContextOptions options) : base(options)
         {
@@ -19,6 +20,7 @@ namespace CampusOrdering.Models
             modelBuilder.Entity<MenuItem>().ToTable("MenuItem");
             modelBuilder.Entity<Receipt>().ToTable("Receipt");
             modelBuilder.Entity<Customer>().ToTable("Customer");
+            modelBuilder.Entity<Order>().ToTable("Order");
         }
     }
 }

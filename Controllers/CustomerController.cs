@@ -9,7 +9,7 @@ namespace CampusOrdering.Controllers
 {
     public class CustomerController : Controller
     {
-       
+
         private readonly OrderingContext _context;
 
 
@@ -42,7 +42,7 @@ namespace CampusOrdering.Controllers
             var customer = _context.Customers.SingleOrDefault(m => m.Id == customerId);
             if (customer == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
             return View(customer);
@@ -59,18 +59,18 @@ namespace CampusOrdering.Controllers
 
                 if (existingCustomer.Id != 0)
                 {
-                    
+
                     existingCustomer.Name = editedCustomer.Name;
                     existingCustomer.Birthdate = editedCustomer.Birthdate;
                     existingCustomer.Email = editedCustomer.Email;
                     existingCustomer.Password = editedCustomer.Password;
 
-                   
+
                 }
                 else
                 {
-                   
-                        _context.Customers.Add(editedCustomer);
+
+                    _context.Customers.Add(editedCustomer);
                 }
                 _context.SaveChanges();
             }
@@ -78,9 +78,15 @@ namespace CampusOrdering.Controllers
             return RedirectToAction("Settings", new { customerId = editedCustomer.Id });
         }
 
+        public ActionResult Index() { 
+        
+            var customers = _context.Customers.ToList();
+
+        return View(customers);
+        }
+
 
     }
 
 
 }
-

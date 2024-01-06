@@ -1,0 +1,31 @@
+﻿using CampusOrdering.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace CampusOrdering.Controllers
+{
+    public class OrderController : Controller
+    {
+
+        private readonly OrderingContext _context;
+
+
+        public OrderController(OrderingContext context)
+        {
+            _context = context;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
+        public IActionResult Index()
+        {
+            var orders = _context.Orders
+                .Include(o => o.purchasingCustomer)
+                .ToList();
+            return View(orders);
+        }
+    }
+}

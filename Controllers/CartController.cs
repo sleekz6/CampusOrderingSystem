@@ -3,6 +3,7 @@ using System.Diagnostics;
 using CampusOrdering.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace CampusOrdering.Controllers
 {
@@ -47,6 +48,17 @@ namespace CampusOrdering.Controllers
 
         public IActionResult Checkout()
         {
+
+            /*
+            code below finds the current customer that is logged in and assigns them to the order. This will be set up after we have authorization implemented.
+
+             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentCustomer = _context.Customers.SingleOrDefault(c => c.Id.ToString() == currentUserId);
+            */
+            var defaultCustomerId = 1;
+            var currentCustomer = _context.Customers.SingleOrDefault(c => c.Id == defaultCustomerId);
+
+
             List<CartItem>  cart = GetCartFromSession();
 
             List<CartItem> clonedCart = cart.Select(item => new CartItem
@@ -63,7 +75,20 @@ namespace CampusOrdering.Controllers
                 TotalPrice = cart.Sum(item => item.Price * item.Quantity)
             };
 
+            Order order = new Order
+            {
+
+                PurchaseDateTime = DateTime.Now,
+                TotalPrice = cart.Sum(item => item.Price * item.Quantity),
+                PurchasedItems = cart,
+                isServed = false,
+                purchasingCustomer = currentCustomer
+            };
+
             _context.Receipts.Add(receipt);
+            
+            _context.Orders.Add(order);
+
             _context.SaveChanges();
 
             ClearCart();
