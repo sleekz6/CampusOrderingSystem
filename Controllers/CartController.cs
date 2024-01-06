@@ -72,7 +72,8 @@ namespace CampusOrdering.Controllers
             {
                 PurchaseDateTime = DateTime.Now,
                 PurchasedItems = cart,
-                TotalPrice = cart.Sum(item => item.Price * item.Quantity)
+                TotalPrice = cart.Sum(item => item.Price * item.Quantity),
+                JSONForReceipt = JsonConvert.SerializeObject(cart)
             };
 
             Order order = new Order
@@ -82,7 +83,8 @@ namespace CampusOrdering.Controllers
                 TotalPrice = cart.Sum(item => item.Price * item.Quantity),
                 PurchasedItems = cart,
                 isServed = false,
-                purchasingCustomer = currentCustomer
+                purchasingCustomer = currentCustomer,
+                JSONstring = JsonConvert.SerializeObject(cart)
             };
 
             _context.Receipts.Add(receipt);
@@ -126,7 +128,7 @@ namespace CampusOrdering.Controllers
             Receipt receipt = _context.Receipts.Find(receiptId);
 
             Console.WriteLine($"Receipt ID: {receiptId}");
-            Console.WriteLine($"PurchasedItems Count: {receipt?.PurchasedItems?.Count}");
+            Console.WriteLine($"PurchasedItems Count : {receipt?.PurchasedItems?.Count}");
 
             // Return the receipt details view
             return View(receipt);

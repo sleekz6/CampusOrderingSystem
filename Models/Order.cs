@@ -9,5 +9,6 @@ namespace CampusOrdering.Models
         public List<CartItem> PurchasedItems { get; set; }
         public Customer purchasingCustomer { get; set; }
         public Boolean isServed { get; set; }
+        public String JSONstring { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CampusOrdering.Models.Order>
+﻿@using Newtonsoft.Json
+@model IEnumerable<CampusOrdering.Models.Order>
 
 @{
     ViewBag.Title = "Order List";
@@ -132,31 +133,38 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var order in Model){
-            <tr>
-                <td>@order.OrderId</td>
-                <td>@order.purchasingCustomer.Name</td>
+            
+            @foreach (var order in Model)
+            {
+                @if (!@order.isServed){
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.purchasingCustomer.Name</td>
                     <td>
-         food
-        </td>
+                        @if (!string.IsNullOrEmpty(order.JSONstring))
+                        {
+                            List<CartItem> cartItems = JsonConvert.DeserializeObject<List<CartItem>>(order.JSONstring);
+
+                            foreach (var cartItem in cartItems)
+                            {
+                                <div>
+                                    @cartItem.MenuItemName - Price: @cartItem.Price, Quantity: @cartItem.Quantity
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div>No items in the cart</div>
+                        }
+                    </td>
                     <td>@order.PurchaseDateTime</td>
-                    @if (@order.isServed) {
-                        <td>Ready</td>
-                    }
-                    @if(@order.isServed == false){
-                        <td>In Progress</td>
-                    }
-                    
-                <td><button class="serve-button" onclick="serveOrder(1)">Serve</button></td>
-            </tr>
+
+                       <td> <a asp-action="ServeOrder" asp-route-orderId="@order.OrderId" class="serve-button">Serve</a></td>
+                    </tr>
+           
             }
-            <tr>
-                <td>2</td>
-                <td>Jane Smith</td>
-                <td>Pizza<br />Salad</td>
-                <td>2023-11-01 09:45</td>
-                <td><button class="serve-button" onclick="serveOrder(2)">Serve</button></td>
-            </tr>
+        } 
+            
         </tbody>
     </table>
 
@@ -173,63 +181,40 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>John Doe</td>
-                <td>Burger, Fries</td>
-                <td>2023-11-01 09:30</td>
-                <td><button class="remove-button" onclick="removeOrder(1)">Remove</button></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Jane Smith</td>
-                <td>Pizza, Salad</td>
-                <td>2023-11-01 09:45</td>
-                <td><button class="remove-button" onclick="removeOrder(2)">Remove</button></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>David Johnson</td>
-                <td>Spaghetti, Garlic Bread</td>
-                <td>2023-11-01 10:00</td>
-                <td><button class="remove-button" onclick="removeOrder(3)">Remove</button></td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Susan Brown</td>
-                <td>Sandwich, Chips</td>
-                <td>2023-11-01 10:15</td>
-                <td><button class="remove-button" onclick="removeOrder(4)">Remove</button></td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Michael Lee</td>
-                <td>Sushi, Miso Soup</td>
-                <td>2023-11-01 10:30</td>
-                <td><button class="remove-button" onclick="removeOrder(5)">Remove</button></td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>Linda Davis</td>
-                <td>Taco, Rice</td>
-                <td>2023-11-01 10:45</td>
-                <td><button class="remove-button" onclick="removeOrder(6)">Remove</button></td>
-            </tr>
-            <tr>
-                <td>7</td>
-                <td>Richard Wilson</td>
-                <td>Pasta, Caesar Salad</td>
-                <td>2023-11-01 11:00</td>
-                <td><button class="remove-button" onclick="removeOrder(7)">Remove</button></td>
-            </tr>
-            <tr>
-                <td>8</td>
-                <td>Mary Harris</td>
-                <td>Steak, Baked Potato</td>
-                <td>2023-11-01 11:15</td>
-                <td><button class="remove-button" onclick="removeOrder(8)">Remove</button></td>
-            </tr>
-            <!-- Add more served orders here -->
+
+            @foreach (var order in Model)
+            {
+                @if (@order.isServed)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.purchasingCustomer.Name</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(order.JSONstring))
+                            {
+                                List<CartItem> cartItems = JsonConvert.DeserializeObject<List<CartItem>>(order.JSONstring);
+
+                                foreach (var cartItem in cartItems)
+                                {
+                                    <div>
+                                        @cartItem.MenuItemName - Price: @cartItem.Price, Quantity: @cartItem.Quantity
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div>No items in the cart</div>
+                            }
+                        </td>
+                        <td>@order.PurchaseDateTime</td>
+
+
+                        <td><button class="serve-button" onclick="serveOrder(@order.OrderId)">Remove</button></td>
+                    </tr>
+
+                }
+            }
+
         </tbody>
     </table>
 

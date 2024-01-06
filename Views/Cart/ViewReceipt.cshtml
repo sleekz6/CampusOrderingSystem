@@ -1,4 +1,5 @@
-﻿@model Receipt
+﻿@using Newtonsoft.Json
+@model Receipt
 
 <h2>Receipt Details</h2>
 
@@ -17,9 +18,15 @@
         <dt>Purchased Items:</dt>
         <dd>
             <ul>
-                @foreach (var item in Model.PurchasedItems)
+                @if (!string.IsNullOrEmpty(Model.JSONForReceipt))
                 {
-                    <li>@item.Quantity x @item.MenuItemName ($@item.Price each)</li>
+                    List < CartItem > cartItems = JsonConvert.DeserializeObject<List<CartItem>>(Model.JSONForReceipt);
+
+
+                    @foreach (var item in cartItems)
+                    {
+                        @string.Format("{0} x {1} (${2:N2} each)", item.Quantity, item.MenuItemName, item.Price)
+                   }
                 }
             </ul>
         </dd>

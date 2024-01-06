@@ -27,5 +27,16 @@ namespace CampusOrdering.Controllers
                 .ToList();
             return View(orders);
         }
+
+        public IActionResult ServeOrder(int orderId) { 
+        
+          var order =   _context.Orders.FirstOrDefault( m => m.OrderId == orderId);
+
+            order.isServed = true;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
     }
 }
