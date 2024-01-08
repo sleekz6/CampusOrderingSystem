@@ -4,6 +4,7 @@ using CampusOrdering.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CampusOrdering.Migrations
 {
     [DbContext(typeof(OrderingContext))]
-    partial class OrderingContextModelSnapshot : ModelSnapshot
+    [Migration("20240105162558_addedOrdersTable")]
+    partial class addedOrdersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,18 +130,11 @@ namespace CampusOrdering.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
-                    b.Property<string>("JSONstring")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("PurchaseDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("isServed")
-                        .HasColumnType("bit");
 
                     b.Property<int>("purchasingCustomerId")
                         .HasColumnType("int");
@@ -157,10 +153,6 @@ namespace CampusOrdering.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReceiptId"));
-
-                    b.Property<string>("JSONForReceipt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PurchaseDateTime")
                         .HasColumnType("datetime2");

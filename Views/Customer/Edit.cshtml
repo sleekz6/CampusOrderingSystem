@@ -87,10 +87,9 @@
             @Html.EditorFor(model => model.Password, new { @type = "password" })
         </div>
 
-       
-    
-
-       @Html.HiddenFor(m => m.Id)
-    <button type="submit" class="btn-primary">Save</button>
+        @Html.HiddenFor(m => m.Id)
+        <button type="submit" class="btn btn-primary">Save</button>
     }
+
+  
 </div>

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using CampusOrdering.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace CampusOrdering.Controllers
 {
@@ -47,6 +48,17 @@ namespace CampusOrdering.Controllers
 
         public IActionResult Checkout()
         {
+
+            /*
+            code below finds the current customer that is logged in and assigns them to the order. This will be set up after we have authorization implemented.
+
+             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentCustomer = _context.Customers.SingleOrDefault(c => c.Id.ToString() == currentUserId);
+            */
+            var defaultCustomerId = 1;
+            var currentCustomer = _context.Customers.SingleOrDefault(c => c.Id == defaultCustomerId);
+
+
             List<CartItem>  cart = GetCartFromSession();
 
             List<CartItem> clonedCart = cart.Select(item => new CartItem
@@ -60,10 +72,25 @@ namespace CampusOrdering.Controllers
             {
                 PurchaseDateTime = DateTime.Now,
                 PurchasedItems = cart,
-                TotalPrice = cart.Sum(item => item.Price * item.Quantity)
+                TotalPrice = cart.Sum(item => item.Price * item.Quantity),
+                JSONForReceipt = JsonConvert.SerializeObject(cart)
+            };
+
+            Order order = new Order
+            {
+
+                PurchaseDateTime = DateTime.Now,
+                TotalPrice = cart.Sum(item => item.Price * item.Quantity),
+                PurchasedItems = cart,
+                isServed = false,
+                purchasingCustomer = currentCustomer,
+                JSONstring = JsonConvert.SerializeObject(cart)
             };
 
             _context.Receipts.Add(receipt);
+            
+            _context.Orders.Add(order);
+
             _context.SaveChanges();
 
             ClearCart();
@@ -101,7 +128,7 @@ namespace CampusOrdering.Controllers
             Receipt receipt = _context.Receipts.Find(receiptId);
 
             Console.WriteLine($"Receipt ID: {receiptId}");
-            Console.WriteLine($"PurchasedItems Count: {receipt?.PurchasedItems?.Count}");
+            Console.WriteLine($"PurchasedItems Count : {receipt?.PurchasedItems?.Count}");
 
             // Return the receipt details view
             return View(receipt);

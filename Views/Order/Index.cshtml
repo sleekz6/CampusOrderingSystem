@@ -1,0 +1,223 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<CampusOrdering.Models.Order>
+
+@{
+    ViewBag.Title = "Order List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant Orders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        #order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+
+            #order-table th, #order-table td {
+                border: 1px solid #ccc;
+                padding: 10px;
+                text-align: center;
+            }
+
+            #order-table th {
+                background-color: #007BFF;
+                color: #fff;
+            }
+
+        .serve-button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-filter {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 20px;
+        }
+
+            .search-filter input {
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+        .search-button, .filter-button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #served-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+
+            #served-table th, #served-table td {
+                border: 1px solid #ccc;
+                padding: 10px;
+                text-align: center;
+            }
+
+            #served-table th {
+                background-color: #007BFF;
+                color: #fff;
+            }
+
+        .remove-button {
+            background-color: #FF0000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        h3 {
+            margin-bottom: 40px;
+            margin-top: 40px;
+        }
+    </style>
+
+</head>
+<body>
+    <h2>Restaurant Orders</h2>
+    <div class="search-filter">
+        <div class="filter">
+            <button class="filter-button" runat="server" onserverclick="FilterOrders">Filter By:</button>
+            <select id="filter-dropdown" runat="server">
+                <option value="all">All</option>
+                <option value="served">Served</option>
+                <option value="unserved">Unserved</option>
+            </select>
+        </div>
+        <div class="search">
+            <input type="text" id="search-input" placeholder="Search..." runat="server" />
+            <button class="search-button" runat="server" onserverclick="SearchOrders">Search</button>
+        </div>
+    </div>
+
+    <h3>Waiting Orders</h3>
+
+    <table id="order-table">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @foreach (var order in Model)
+            {
+                @if (!@order.isServed){
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.purchasingCustomer.Name</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(order.JSONstring))
+                        {
+                            List<CartItem> cartItems = JsonConvert.DeserializeObject<List<CartItem>>(order.JSONstring);
+
+                            foreach (var cartItem in cartItems)
+                            {
+                                <div>
+                                    @cartItem.MenuItemName - Price: @cartItem.Price, Quantity: @cartItem.Quantity
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div>No items in the cart</div>
+                        }
+                    </td>
+                    <td>@order.PurchaseDateTime</td>
+
+                       <td> <a asp-action="ServeOrder" asp-route-orderId="@order.OrderId" class="serve-button">Serve</a></td>
+                    </tr>
+           
+            }
+        } 
+            
+        </tbody>
+    </table>
+
+    <h3>Served Orders</h3>
+
+    <table id="served-table">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var order in Model)
+            {
+                @if (@order.isServed)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.purchasingCustomer.Name</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(order.JSONstring))
+                            {
+                                List<CartItem> cartItems = JsonConvert.DeserializeObject<List<CartItem>>(order.JSONstring);
+
+                                foreach (var cartItem in cartItems)
+                                {
+                                    <div>
+                                        @cartItem.MenuItemName - Price: @cartItem.Price, Quantity: @cartItem.Quantity
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div>No items in the cart</div>
+                            }
+                        </td>
+                        <td>@order.PurchaseDateTime</td>
+
+
+                        <td><button class="serve-button" onclick="serveOrder(@order.OrderId)">Remove</button></td>
+                    </tr>
+
+                }
+            }
+
+        </tbody>
+    </table>
+
+
+</body>
+</html>
