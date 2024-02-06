@@ -1,0 +1,22 @@
+﻿@model CheckoutViewModel
+
+<h2>Checkout</h2>
+
+<form asp-action="ProcessCheckout" method="post">
+    <div>
+        <label for="UserName">Name:</label>
+        <input asp-for="UserName" />
+    </div>
+
+    <div>
+        <label for="CardNumber">Card Number:</label>
+        <input asp-for="CardNumber" />
+    </div>
+
+    <div>
+        <label for="CVV">CVV:</label>
+        <input asp-for="CVV" />
+    </div>
+
+    <button type="submit">Submit Order</button>
+</form>

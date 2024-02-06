@@ -46,6 +46,30 @@ namespace CampusOrdering.Controllers
             HttpContext.Session.SetString(SessionKey, sessionData);
         }
 
+        public IActionResult CheckoutPage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ProcessCheckout(CheckoutViewModel model)
+        {
+            // Validate the model
+            if (!ModelState.IsValid || !model.IsCardNumberValid())
+            {
+                ModelState.AddModelError("CardNumber", "Invalid credit card number.");
+                return View("CheckoutPage", model);
+            }
+
+            // Perform payment processing (e.g., using a payment gateway)
+
+            // Clear the cart after successful checkout
+            ClearCart();
+
+            // Redirect to a Thank You page or another appropriate page
+            return RedirectToAction("ThankYou");
+        }
+
         public IActionResult Checkout()
         {
 
