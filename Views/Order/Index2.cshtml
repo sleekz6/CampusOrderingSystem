@@ -40,3 +40,46 @@
 }
     </tbody>
 </table>
+
+
+                @*
+
+
+                using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using CampusOrdering.Data;
+
+namespace CampusOrdering.Models
+
+{
+
+    public class OrderingContext : IdentityDbContext<AppUser>
+    {
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<MenuItem> MenuItems{ get; set; }
+        public DbSet<Receipt> Receipts { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
+        //public OrderingContext(DbContextOptions options) : base(options)
+        //{
+
+        //}
+
+        public OrderingContext(DbContextOptions<OrderingContext> options) : base(options)
+        {
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Restaurant>().ToTable("Restaurant");
+            modelBuilder.Entity<MenuItem>().ToTable("MenuItem");
+            modelBuilder.Entity<Receipt>().ToTable("Receipt");
+            modelBuilder.Entity<Customer>().ToTable("Customer");
+            modelBuilder.Entity<Order>().ToTable("Order");
+        }
+    }
+}
+
+                *@

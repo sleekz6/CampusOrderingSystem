@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using CampusOrdering.Models;
+using CampusOrdering.Data;
+
 namespace CampusOrdering.Controllers
 {
     public class RestaurantController : Controller
     {
-        private readonly OrderingContext _context;
+        private readonly AuthDbContext _context;
 
 
-        public RestaurantController(OrderingContext context)
+        public RestaurantController(AuthDbContext context)
         {
             _context = context;
             _context.SaveChanges(); 
