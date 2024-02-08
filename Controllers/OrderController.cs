@@ -1,4 +1,5 @@
-﻿using CampusOrdering.Models;
+﻿using CampusOrdering.Data;
+using CampusOrdering.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,10 @@ namespace CampusOrdering.Controllers
     public class OrderController : Controller
     {
 
-        private readonly OrderingContext _context;
+        private readonly AuthDbContext _context;
 
 
-        public OrderController(OrderingContext context)
+        public OrderController(AuthDbContext context)
         {
             _context = context;
         }

@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CampusOrdering.Models;
 using Microsoft.EntityFrameworkCore;
+using CampusOrdering.Data;
 
 namespace CampusOrdering.Controllers
 {
     public class MenuItemController : Controller
     {
-        private readonly OrderingContext _context;
+        private readonly AuthDbContext _context;
 
-        public MenuItemController(OrderingContext context)
+        public MenuItemController(AuthDbContext context)
         {
             _context = context;
         }
