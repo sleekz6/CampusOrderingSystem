@@ -1,0 +1,115 @@
+﻿@page
+@{
+    Layout = "NoLayout";
+}
+
+<!-- Login page content goes here -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Creation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+
+        #container {
+            display: flex;
+            width: 80%;
+            max-width: 800px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex-direction: row;
+        }
+
+        #title {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        #left {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        #left input {
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        #left button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #left button.cancel {
+            background-color: #ccc;
+        }
+
+        #right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #right img {
+            width: 100%;
+            height: 50vh; /* Set the image height to 50% of the viewport height */
+            object-fit: cover;
+        }
+
+        #center-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="left">
+            <div id="title">Account Creation</div>
+            <input type="text" placeholder="First Name">
+            <input type="text" placeholder="Last Name">
+            <input type="text" placeholder="Age">
+            <input type="email" placeholder="Email">
+            <input type="email" placeholder="Confirm Email">
+            <input type="password" placeholder="Password">
+            <div id="center-buttons">
+                <div class="button-container">
+                    <button>Create</button>
+                    <button class="cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div id="right">
+            <img src="your-image-url.jpg" alt="Image">
+        </div>
+    </div>
+</body>
+</html>

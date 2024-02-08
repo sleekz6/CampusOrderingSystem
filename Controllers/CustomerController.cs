@@ -1,19 +1,16 @@
 ﻿using CampusOrdering.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.Entity;
-using System.Collections.Generic;
-using System.Linq;
-
+using CampusOrdering.Data;
 
 namespace CampusOrdering.Controllers
 {
     public class CustomerController : Controller
     {
 
-        private readonly OrderingContext _context;
+        private readonly AuthDbContext _context;
 
 
-        public CustomerController(OrderingContext context)
+        public CustomerController(AuthDbContext context)
         {
             _context = context;
         }
@@ -83,6 +80,15 @@ namespace CampusOrdering.Controllers
             var customers = _context.Customers.ToList();
 
         return View(customers);
+        }
+
+        public ActionResult PastOrder() {
+           
+            return View();
+        }
+
+        public ActionResult simple() {
+            return View();
         }
 
 

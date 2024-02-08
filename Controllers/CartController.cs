@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using CampusOrdering.Models;
-using Microsoft.AspNetCore.Http;
+
 using Newtonsoft.Json;
 using System.Security.Claims;
+using CampusOrdering.Data;
 
 namespace CampusOrdering.Controllers
 {
     public class CartController : Controller
     {
         private readonly string SessionKey = "ShoppingCart";
-        private readonly OrderingContext _context;
+        private readonly AuthDbContext _context;
 
-        public CartController(OrderingContext context)
+        public CartController(AuthDbContext context)
         {
             _context = context;
         }
