@@ -1,5 +1,6 @@
 ﻿@model CheckoutViewModel
 
+<link rel="stylesheet" href="style.css">
 <h2>Checkout</h2>
 
 <form asp-action="ProcessCheckout" method="post">
@@ -11,6 +12,11 @@
     <div>
         <label for="CardNumber">Card Number:</label>
         <input asp-for="CardNumber" />
+        <span asp-validation-for="CardNumber"></span>
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <span class="text-danger">@Model.ErrorMessage</span>
+        }
     </div>
 
     <div>

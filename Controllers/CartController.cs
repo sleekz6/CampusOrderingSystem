@@ -58,7 +58,7 @@ namespace CampusOrdering.Controllers
             if (!ModelState.IsValid || !model.IsCardNumberValid())
             {
                 ModelState.AddModelError("CardNumber", "Invalid credit card number.");
-                return View("CheckoutPage", model);
+                return View("Checkout", model);
             }
 
             // Perform payment processing (e.g., using a payment gateway)
@@ -70,6 +70,7 @@ namespace CampusOrdering.Controllers
             return RedirectToAction("ThankYou");
         }
 
+        [HttpGet]
         public IActionResult Checkout()
         {
 
@@ -81,7 +82,6 @@ namespace CampusOrdering.Controllers
             */
             var defaultCustomerId = 1;
             var currentCustomer = _context.Customers.SingleOrDefault(c => c.Id == defaultCustomerId);
-
 
             List<CartItem>  cart = GetCartFromSession();
 

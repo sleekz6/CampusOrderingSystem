@@ -1,5 +1,6 @@
 ﻿@model List<CartItem>
 
+<link rel="stylesheet" href="style.css">
 <h2>Your Shopping Cart</h2>
 
 <div class="table-responsive">
@@ -25,5 +26,5 @@
 </div>
 
 <div>
-    <a class="btn btn-primary" href="@Url.Action("CheckoutPage", "Cart")">Checkout</a>
+    <a class="btn btn-primary" href="@Url.Action("Checkout", "Cart")">Checkout</a>
 </div>
