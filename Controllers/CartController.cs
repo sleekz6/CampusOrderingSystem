@@ -54,25 +54,18 @@ namespace CampusOrdering.Controllers
         [HttpPost]
         public IActionResult ProcessCheckout(CheckoutViewModel model)
         {
-            // Validate the model
-            if (!ModelState.IsValid || !model.IsCardNumberValid())
+
+            if (!model.IsCardNumberValid())
             {
                 ModelState.AddModelError("CardNumber", "Invalid credit card number.");
-                return View("Checkout", model);
             }
 
-            // Perform payment processing (e.g., using a payment gateway)
-
-            // Clear the cart after successful checkout
-            ClearCart();
-
-            // Redirect to a Thank You page or another appropriate page
-            return RedirectToAction("ThankYou");
-        }
-
-        [HttpGet]
-        public IActionResult Checkout()
-        {
+            // Check for overall model validity (including other properties)
+            //if (!ModelState.IsValid)
+            //{
+                // Return the Checkout view with the invalid model
+              //  return View("Checkout", model);
+            //}
 
             /*
             code below finds the current customer that is logged in and assigns them to the order. This will be set up after we have authorization implemented.
@@ -80,10 +73,11 @@ namespace CampusOrdering.Controllers
              var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentCustomer = _context.Customers.SingleOrDefault(c => c.Id.ToString() == currentUserId);
             */
-            var defaultCustomerId = 1;
+
+            var defaultCustomerId = 2;
             var currentCustomer = _context.Customers.SingleOrDefault(c => c.Id == defaultCustomerId);
 
-            List<CartItem>  cart = GetCartFromSession();
+            List<CartItem> cart = GetCartFromSession();
 
             List<CartItem> clonedCart = cart.Select(item => new CartItem
             {
@@ -112,14 +106,28 @@ namespace CampusOrdering.Controllers
             };
 
             _context.Receipts.Add(receipt);
-            
+
             _context.Orders.Add(order);
 
             _context.SaveChanges();
+            // Validate the model
 
+            // Perform payment processing (e.g., using a payment gateway)
+
+            // Clear the cart after successful checkout
             ClearCart();
 
+            // Redirect to a Thank You page or another appropriate page
             return RedirectToAction("ThankYou");
+        }
+
+        [HttpGet]
+        public IActionResult Checkout()
+        {
+            var model = new CheckoutViewModel();
+
+            model.ErrorMessage = "Enter a valid credit card with no spaces.";
+            return View(model);
         }
 
         public IActionResult Receipts()

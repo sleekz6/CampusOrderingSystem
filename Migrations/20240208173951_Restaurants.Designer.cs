@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CampusOrdering.Migrations
 {
     [DbContext(typeof(OrderingContext))]
-    [Migration("20240208120203_Test")]
-    partial class Test
+    [Migration("20240208173951_Restaurants")]
+    partial class Restaurants
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

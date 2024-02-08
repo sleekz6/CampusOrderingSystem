@@ -14,9 +14,9 @@
         <input asp-for="CardNumber" />
         <span asp-validation-for="CardNumber"></span>
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-        {
-            <span class="text-danger">@Model.ErrorMessage</span>
-        }
+{
+    <span class="text-danger">@Model.ErrorMessage</span>
+}
     </div>
 
     <div>
