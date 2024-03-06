@@ -1,10 +1,9 @@
-﻿using CampusOrdering.Areas.Identity.Data;
-using CampusOrdering.Models;
+﻿
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CampusOrdering.Data;
+namespace CampusOrdering.Models;
 
 public class AuthDbContext : IdentityDbContext<AppUser>
 {

@@ -1,5 +1,4 @@
-﻿using CampusOrdering.Data;
-using CampusOrdering.Models;
+﻿using CampusOrdering.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
