@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CampusOrdering.Migrations
 {
-    [DbContext(typeof(OrderingContext))]
+    //[DbContext(typeof(OrderingContext))]
     [Migration("20240208173951_Restaurants")]
     partial class Restaurants
     {

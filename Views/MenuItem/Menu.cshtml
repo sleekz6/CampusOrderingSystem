@@ -4,42 +4,46 @@
 </head>
 
 <div class="center-content">
-<h2>Menu for @Model.Name</h2>
+    <h2>Menu for @Model.Name</h2>
 
-<!-- Modal -->
-<div class="modal">
-<div class="modal fade" id="itemDetailsModal" tabindex="-1" role="dialog" aria-labelledby="itemDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="itemDetailsModalLabel">Item Details</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+     <div class="row">
+        @foreach (var menuItem in Model.Menu)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="@menuItem.ImageUrl" class="card-img-top" alt="@menuItem.ItemName">
+                    <div class="card-body">
+                        <h5 class="card-title">@menuItem.ItemName</h5>
+                        <p class="card-text">Calories: @menuItem.Calories</p>
+                        <p class="card-text">Price: $@menuItem.Price</p>
+                        <p class="card-text">Size: @menuItem.Size</p>
+                        <button type="button" class="btn btn-primary" onclick="showItemDetails(@menuItem.Id)">Details</button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body" id="itemDetailsBody">
-                <!-- Content will be dynamically added here using JavaScript -->
-            </div>
-            <div class="modal-footer">
-                <!-- Buttons to change size -->
-                <button type="button" class="btn btn-primary" onclick="changeSize('small')">Small</button>
-                <button type="button" class="btn btn-primary" onclick="changeSize('medium')">Medium</button>
-                <button type="button" class="btn btn-primary" onclick="changeSize('large')">Large</button>
-                <button id="addToCartBtn" class="btn btn-primary">Add to Cart</button>
+        }
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="itemDetailsModal" tabindex="-1" role="dialog" aria-labelledby="itemDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="itemDetailsModalLabel">Item Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="itemDetailsBody">
+                    <!-- Content will be dynamically added here using JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <button id="addToCartBtn" class="btn btn-primary">Add to Cart</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<ul>
-    @foreach (var menuItem in Model.Menu)
-    {
-        <div class="menu-item">
-            <img src="@menuItem.ImageUrl" alt="@menuItem.ItemName" width="auto" height="200" class="menu-item-image" data-name="@menuItem.ItemName" data-calories="@menuItem.Calories" data-price="@menuItem.Price" data-size="@menuItem.Size" />
-        </div>
-    }
-</ul>
 
 </div>
 
@@ -61,6 +65,18 @@
         var newCal = 0;
         var cart = [];
         var menuItemId = 0;
+
+        function showItemDetails(itemId) {
+        // Get item details using AJAX or pass itemId to the modal and populate content dynamically
+        // For simplicity, I'm just showing an empty modal body
+        $('#itemDetailsBody').html('');
+        $('#itemDetailsModal').modal('show');
+    }
+
+    $('#addToCartBtn').on('click', function () {
+        // Add item to cart logic here
+        // For simplicity, I'm not implementing this functionality in this example
+        $('#itemDetailsModal').modal('hide');
     
     $(document).ready(function () {
         $('.menu-item-image').on('click', function () {
