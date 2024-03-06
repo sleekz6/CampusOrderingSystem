@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using CampusOrdering.Models;
-using CampusOrdering.Data;
 
 namespace CampusOrdering.Controllers
 {

@@ -4,7 +4,6 @@ using CampusOrdering.Models;
 
 using Newtonsoft.Json;
 using System.Security.Claims;
-using CampusOrdering.Data;
 
 namespace CampusOrdering.Controllers
 {

@@ -88,32 +88,8 @@ h2 {
 </head>
 <body style="background-color: #0a233f;">
 
-<div class="navbar">
-     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CampusOrdering</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
-  <div class="dropdown">
-    <button class="dropbtn">Dropdown 
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content">
-       <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Settings" asp-route-customerId="2">Account</a>
-      <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="PastOrder">Past Orders</a>
-      <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Info">Help</a>
-      <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
-    </div>
-  </div>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">           </a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">           </a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">           </a>
+    @await Html.PartialAsync("_NavBarPartial")
 
-        <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Register">Register</a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Login">Login</a>
-</div>
 
    <div class="container">
         <main role="main" class="pb-3">
