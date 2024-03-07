@@ -3,10 +3,32 @@
     <link rel="stylesheet" href="~/css/mycsstheme.css" />
 </head>
 
-<body>
-
 <div class="center-content">
     <h2>Menu for @Model.Name</h2>
+
+    <!-- Modal -->
+    <div class="modal fade" id="itemDetailsModal" tabindex="-1" role="dialog" aria-labelledby="itemDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="itemDetailsModalLabel">Item Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="itemDetailsBody">
+                    <!-- Content will be dynamically added here using JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <!-- Buttons to change size -->
+                    <button type="button" class="btn btn-primary" onclick="changeSize('small')">Small</button>
+                    <button type="button" class="btn btn-primary" onclick="changeSize('medium')">Medium</button>
+                    <button type="button" class="btn btn-primary" onclick="changeSize('large')">Large</button>
+                    <button id="addToCartBtn" class="btn btn-outline-warning">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         @foreach (var menuItem in Model.Menu)
@@ -21,37 +43,12 @@
                             data-price="@menuItem.Price"
                             data-size="@menuItem.Size"
                             data-id="@menuItem.Id"
-                            onclick="showItemDetails('@menuItem.Id')">Details</button>
+                            >Details</button>
                     </div>
                 </div>
             </div>
         }
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="itemDetailsModal" tabindex="-1" role="dialog" aria-labelledby="itemDetailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                </div>
-                <div class="modal-body" id="itemDetailsBody">
-
-                </div>
-                <div class="modal-footer">
-                    <button id="addToCartBtn" class="btn btn-primary">Add to Cart</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <ul class="list-unstyled">
-        @foreach (var menuItem in Model.Menu)
-        {
-            <li class="media">
-                <img src="@menuItem.ImageUrl" alt="@menuItem.ItemName" class="mr-3" width="200" height="200" data-name="@menuItem.ItemName" data-calories="@menuItem.Calories" data-price="@menuItem.Price" data-size="@menuItem.Size" />
-            </li>
-        }
-    </ul>
 </div>
 
 <!-- Include jQuery and Bootstrap JavaScript -->
@@ -69,72 +66,54 @@
     var cart = [];
     var menuItemId = 0;
 
-    function showItemDetails(itemId) {
-       $.ajax({
-            url: '@Url.Action("GetItemDetails", "MenuItem")', // Replace with your controller action URL
-            type: 'GET',
-            data: { itemId: itemId },
-            success: function (data) {
-                // Populate modal content with fetched data
-                $('#itemDetailsBody').html(data);
-                $('#itemDetailsModal').modal('show');
-            },
-            error: function () {
-                // Handle error if AJAX call fails
-                alert('Failed to fetch item details.');
-            }
-        });
-    }
-
     $(document).ready(function () {
-    $('.btn-details').on('click', function () {
-        name = $(this).data('name');
-        calories = $(this).data('calories');
-        newCal = calories;
-        price = parseFloat($(this).data('price'));
-        newPrice = price;
-        size = $(this).data('size');
-        menuItemId = $(this).data('id'); // Assign menuItemId here
+        $('.btn-details').on('click', function () {
+            var $button = $(this);
+            name = $button.data('name');
+            calories = $button.data('calories');
+            newCal = calories;
+            price = parseFloat($button.data('price'));
+            newPrice = price;
+            size = $button.data('size');
+            menuItemId = $button.data('id');
 
-        // Show the modal
-        $('#itemDetailsModal').modal('show');
+            // Update modal content dynamically
+            updateModalContent();
 
-        console.log("Updated variables:");
-        console.log("Name:", name);
-        console.log("Calories:", newCal);
-        console.log("Price:", newPrice);
-        console.log("Size:", size);
-        console.log("MenuItemId:", menuItemId);
-    });
-
-    $('#addToCartBtn').on('click', function () {
-        console.log('Add to Cart button clicked.');
-
-        var cartItem = {
-            MenuItemId: menuItemId,
-            MenuItemName: name,
-            Price: newPrice,
-            Size: size,
-            Quantity: 1
-        };
-
-        console.log('CartItem:', cartItem);
-
-        $.post('@Url.Action("AddToCart", "Cart")', cartItem, function (data) {
-            console.log('Add to Cart request successful.');
-            console.log('Response data:', data);
-        }).fail(function (xhr, status, error) {
-            console.error('Add to Cart request failed.');
-            console.error('Error:', error);
-            console.error('Status:', status);
-            console.error('Response:', xhr.responseText);
+            // Show the modal
+            $('#itemDetailsModal').modal('show');
         });
 
-        console.log('Cart:', cart);
+        $('#addToCartBtn').on('click', function () {
+            var menuItemId = $(this).data('id');
+            var menuItemName = $(this).data('name');
 
-        $('#itemDetailsModal').modal('hide');
+            var cartItem = {
+                MenuItemId: menuItemId,
+                MenuItemName: name,
+                Price: newPrice,
+                Size: size,
+                Quantity: 1
+            };
+
+            $.post('@Url.Action("AddToCart", "Cart")', cartItem, function (data) {
+                console.log(data);
+            });
+
+            cart.push(cartItem);
+
+            $('#itemDetailsModal').modal('hide');
+        });
     });
-});
+
+    function updateModalContent() {
+        $('#itemDetailsBody').html(`
+                    <p><strong>${name}</strong></p>
+                    <p>Calories: ${newCal}</p>
+                    <p>Price: $${newPrice.toFixed(2)}</p>
+                    <p>Size: ${size}</p>
+                `);
+    }
 
     function changeSize(newSize) {
         var baseCal = calories;
@@ -162,4 +141,3 @@
     }
 
 </script>
-</body>
