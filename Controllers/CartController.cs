@@ -20,6 +20,9 @@ namespace CampusOrdering.Controllers
         public IActionResult Index()
         {
             List<CartItem> _cart = GetCartFromSession();
+            TimeSpan estimate = CalculateOrderEstimate(_cart, _cart.Count);
+
+            ViewBag.OrderEstimate = estimate;
             return View(_cart);
         }
 
@@ -52,22 +55,8 @@ namespace CampusOrdering.Controllers
             return View();
         }
 
-        [HttpPost]
         public IActionResult ProcessCheckout(CheckoutViewModel model)
         {
-
-            if (!model.IsCardNumberValid())
-            {
-                ModelState.AddModelError("CardNumber", "Invalid credit card number.");
-            }
-
-            // Check for overall model validity (including other properties)
-            //if (!ModelState.IsValid)
-            //{
-                // Return the Checkout view with the invalid model
-              //  return View("Checkout", model);
-            //}
-
             /*
             code below finds the current customer that is logged in and assigns them to the order. This will be set up after we have authorization implemented.
 
@@ -113,6 +102,10 @@ namespace CampusOrdering.Controllers
             _context.Orders.Add(order);
 
             _context.SaveChanges();
+
+            TimeSpan estimate = CalculateOrderEstimate(GetCartFromSession(), GetCartFromSession().Count());
+
+            ViewBag.OrderEstimate = estimate;
             // Validate the model
 
             // Perform payment processing (e.g., using a payment gateway)
@@ -121,7 +114,7 @@ namespace CampusOrdering.Controllers
             ClearCart();
 
             // Redirect to a Thank You page or another appropriate page
-            return RedirectToAction("ThankYou");
+            return RedirectToAction("ThankYou", new {estimateTime = estimate});
         }
 
         [HttpGet]
@@ -169,9 +162,24 @@ namespace CampusOrdering.Controllers
             return View(receipt);
         }
 
-        public IActionResult ThankYou()
+        public IActionResult ThankYou(TimeSpan estimateTime)
         {
+            ViewBag.OrderEstimate = estimateTime;
             return View();
+        }
+
+        public TimeSpan CalculateOrderEstimate(List<CartItem> cart, int additionalItems)
+        {
+            int baseMinutes = 5;
+            int incrementMinutesPerItem = 1; // Increase by 1 minute per item
+
+            // Calculate additional minutes based on the number of additional items
+            int additionalMinutes = additionalItems * incrementMinutesPerItem;
+
+            // Add additional minutes to base estimate
+            TimeSpan estimate = TimeSpan.FromMinutes(baseMinutes + additionalMinutes);
+
+            return estimate;
         }
     }
 }

@@ -51,3 +51,19 @@ footer {
     padding: 20px;
     text-align: center;
 }
+
+/* Reduce vertical spacing between elements */
+#checkout-container {
+    margin-top: 20px; /* Adjust as needed */
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+/* Adjust spacing between form elements */
+.form-group {
+    margin-bottom: 10px; /* Adjust as needed */
+}
+
+/* Reduce spacing between buttons */
+.btn {
+    margin-bottom: 10px; /* Adjust as needed */
+}
