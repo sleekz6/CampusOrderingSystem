@@ -4,20 +4,18 @@
     <link rel="stylesheet" href="../css/menu.css" />
 </head>
 
-<div class="center-content">
+    <h1>Choose a Restaurant</h1>
 
-<h1>Choose a Restaurant</h1>
-
-
-
-<div class="restaurant-list">
-    @foreach (var restaurant in Model)
-    {
-        <div class="menu-item">
-        <a href="@Url.Action("Menu", "MenuItem", new { restID = restaurant.Id })">
-                <img src="@restaurant.LogoUrl" alt="@restaurant.Name" width="auto" height="auto"/>
-        </a>
-        </div>
+        <div class="restaurant-list">
+        @foreach (var restaurant in Model)
+        {
+            <div class="card">
+                <a href="@Url.Action("Menu", "MenuItem", new { restID = restaurant.Id })">
+                    <img src="@restaurant.LogoUrl" alt="@restaurant.Name" class="card-img-top" />
+                    <div class="card-body">
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
     }
-</div>
-</div>

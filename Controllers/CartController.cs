@@ -23,6 +23,7 @@ namespace CampusOrdering.Controllers
             return View(_cart);
         }
 
+        [HttpPost]
         public IActionResult AddToCart(CartItem cartItem)
         {
             List<CartItem> _cart = GetCartFromSession();

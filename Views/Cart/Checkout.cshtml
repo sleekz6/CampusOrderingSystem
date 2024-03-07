@@ -1,9 +1,13 @@
 ﻿@model CheckoutViewModel
 
+
+<div class="center-content">
 <link rel="stylesheet" href="style.css">
 <h2>Checkout</h2>
 
-<form asp-action="ProcessCheckout" method="post">
+<button id="redirectButton">Redirect to ThankYou Page</button>
+
+<!-- <form asp-action="ProcessCheckout" method="post">
     <div>
         <label for="UserName">Name:</label>
         <input asp-for="UserName" />
@@ -25,4 +29,20 @@
     </div>
 
     <button type="submit">Submit Order</button>
-</form>
+</form>-->
+
+<script src="https://www.paypal.com/sdk/js?client-id=BAAAI1tqw1eFgo_wkjeDRjNV_6-upnuL8TSVg1O0YHatM87Ov-hcVCCFEZwfdVtQdynFDtpfwcWSteHAN0&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
+<div id="paypal-container-KHX67JPVXZZUE"></div>
+<script>
+    $(document).ready(function() {
+    // Handle click event for the redirect button
+    $('#redirectButton').on('click', function() {
+        // Redirect to the ThankYou page
+        window.location.href = '../ThankYou.cshtml';
+    });
+});
+  paypal.HostedButtons({
+    hostedButtonId: "KHX67JPVXZZUE",
+  }).render("#paypal-container-KHX67JPVXZZUE")
+</script>
+</div>
