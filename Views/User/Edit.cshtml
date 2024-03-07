@@ -1,0 +1,39 @@
+﻿@model CampusOrdering.ViewModels.UserDetailViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit @Model.UserName's Profile</h2>
+
+@using (Html.BeginForm("Edit", "User"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.RestaurantId)
+        @Html.TextBoxFor(m => m.RestaurantId, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.roleId)
+        <select asp-for="roleId" asp-items="@Model.RoleList" class="form-control">
+            <option disabled selected>--Select Role--</option>
+        </select>
+        <span asp-validation-for="roleId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Birthday)
+        @Html.TextBoxFor(m => m.Birthday, "{0:d MMM yyyy}", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.UserName)
+        @Html.HiddenFor(m => m.ProfileImageUrl)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+

@@ -1,46 +1,62 @@
 ﻿@* _NavBarPartial.cshtml *@
 
 
-<div class="navbar">
-    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CampusOrdering</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-    @if (User.Identity.IsAuthenticated)
-{
-    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
-}
-    <div class="dropdown">
-        <button class="dropbtn">
-            Dropdown
-            <i class="fa fa-caret-down"></i>
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="dropdown-content">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Settings" asp-route-customerId="2">Account</a>
-            <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="PastOrder">Past Orders</a>
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Info">Help</a>
-            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                        Home
+                        <span class="visually-hidden">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Restaurant" asp-action="ChooseRestaurant">Menu</a>
+                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                    </li>
+
+                }
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Settings" asp-route-customerId="2">Account</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="PastOrder">Past Orders</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Info">Help</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </li>
+            </ul>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+
+                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">
+                    <span class="h6 mb-0">Logout</span>
+                </a>
+
+            }
+            else
+            {
+                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+            }
         </div>
     </div>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">           </a>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">           </a>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">           </a>
-
-    @if (User.Identity.IsAuthenticated)
-{
-   
-        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">
-            <span class="h6 mb-0">Logout</span>
-        </a>
-    
-}
-else{
-    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-}
-</div>
-
-
-
+</nav>

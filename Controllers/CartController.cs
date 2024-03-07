@@ -85,6 +85,8 @@ namespace CampusOrdering.Controllers
                 MenuItemName = item.MenuItemName,
                 Price = item.Price,
                 Quantity = item.Quantity
+               
+
             }).ToList();
 
             Receipt receipt = new Receipt

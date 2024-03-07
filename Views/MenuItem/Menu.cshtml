@@ -1,6 +1,6 @@
 ﻿@model Restaurant
 <head>
-    <link rel="stylesheet" href="../css/menu.css" />
+    <link rel="stylesheet" href="~/css/mycsstheme.css" />
 </head>
 
 <body>
@@ -43,15 +43,20 @@
             </div>
         </div>
     </div>
+
+    <ul class="list-unstyled">
+        @foreach (var menuItem in Model.Menu)
+        {
+            <li class="media">
+                <img src="@menuItem.ImageUrl" alt="@menuItem.ItemName" class="mr-3" width="200" height="200" data-name="@menuItem.ItemName" data-calories="@menuItem.Calories" data-price="@menuItem.Price" data-size="@menuItem.Size" />
+            </li>
+        }
+    </ul>
 </div>
 
 <!-- Include jQuery and Bootstrap JavaScript -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    var $ = jQuery.noConflict();
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"></script>
 
 <script>
     // JavaScript to handle the click event and populate modal content
