@@ -3,21 +3,25 @@
     <link rel="stylesheet" href="../css/menu.css" />
 </head>
 
+<body>
+
 <div class="center-content">
     <h2>Menu for @Model.Name</h2>
 
-     <div class="row">
+    <div class="row">
         @foreach (var menuItem in Model.Menu)
         {
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <img src="@menuItem.ImageUrl" class="card-img-top" alt="@menuItem.ItemName">
                     <div class="card-body">
-                        <h5 class="card-title">@menuItem.ItemName</h5>
-                        <p class="card-text">Calories: @menuItem.Calories</p>
-                        <p class="card-text">Price: $@menuItem.Price</p>
-                        <p class="card-text">Size: @menuItem.Size</p>
-                        <button type="button" class="btn btn-primary" onclick="showItemDetails(@menuItem.Id)">Details</button>
+                        <button type="button" class="btn btn-details"
+                            data-name="@menuItem.ItemName"
+                            data-calories="@menuItem.Calories"
+                            data-price="@menuItem.Price"
+                            data-size="@menuItem.Size"
+                            data-id="@menuItem.Id"
+                            onclick="showItemDetails('@menuItem.Id')">Details</button>
                     </div>
                 </div>
             </div>
@@ -29,13 +33,9 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="itemDetailsModalLabel">Item Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body" id="itemDetailsBody">
-                    <!-- Content will be dynamically added here using JavaScript -->
+
                 </div>
                 <div class="modal-footer">
                     <button id="addToCartBtn" class="btn btn-primary">Add to Cart</button>
@@ -43,8 +43,6 @@
             </div>
         </div>
     </div>
-</div>
-
 </div>
 
 <!-- Include jQuery and Bootstrap JavaScript -->
@@ -57,74 +55,81 @@
 
 <script>
     // JavaScript to handle the click event and populate modal content
-        var name = "";
-        var calories = 0;
-        var price = 0.0;
-        var size = "";
-        var newPrice = 0.0;
-        var newCal = 0;
-        var cart = [];
-        var menuItemId = 0;
+    var name = "";
+    var calories = 0;
+    var price = 0.0;
+    var size = "";
+    var newPrice = 0.0;
+    var newCal = 0;
+    var cart = [];
+    var menuItemId = 0;
 
-        function showItemDetails(itemId) {
-        // Get item details using AJAX or pass itemId to the modal and populate content dynamically
-        // For simplicity, I'm just showing an empty modal body
-        $('#itemDetailsBody').html('');
-        $('#itemDetailsModal').modal('show');
+    function showItemDetails(itemId) {
+       $.ajax({
+            url: '@Url.Action("GetItemDetails", "MenuItem")', // Replace with your controller action URL
+            type: 'GET',
+            data: { itemId: itemId },
+            success: function (data) {
+                // Populate modal content with fetched data
+                $('#itemDetailsBody').html(data);
+                $('#itemDetailsModal').modal('show');
+            },
+            error: function () {
+                // Handle error if AJAX call fails
+                alert('Failed to fetch item details.');
+            }
+        });
     }
 
-    $('#addToCartBtn').on('click', function () {
-        // Add item to cart logic here
-        // For simplicity, I'm not implementing this functionality in this example
-        $('#itemDetailsModal').modal('hide');
-    
     $(document).ready(function () {
-        $('.menu-item-image').on('click', function () {
-            name = $(this).data('name');
-            calories = $(this).data('calories');
-            newCal = calories;
-            price = parseFloat($(this).data('price'));
-            newPrice = price;
-            size = $(this).data('size');
-            menuItemId = $(this).data('id');
+    $('.btn-details').on('click', function () {
+        name = $(this).data('name');
+        calories = $(this).data('calories');
+        newCal = calories;
+        price = parseFloat($(this).data('price'));
+        newPrice = price;
+        size = $(this).data('size');
+        menuItemId = $(this).data('id'); // Assign menuItemId here
 
-            // Update modal content dynamically
-            updateModalContent();
+        // Show the modal
+        $('#itemDetailsModal').modal('show');
 
-            // Show the modal
-            $('#itemDetailsModal').modal('show');
-        });
-
-        $('#addToCartBtn').on('click', function () {
-            var menuItemId = $(this).data('id');
-            var menuItemName = $(this).data('name');
-
-            var cartItem = {
-                MenuItemId:menuItemId,
-                MenuItemName: name,
-                Price: newPrice,
-                Size: size,
-                Quantity: 1
-            };
-
-            $.post('@Url.Action("AddToCart", "Cart")', cartItem, function (data) {
-                console.log(data);
-            });
-
-            cart.push(cartItem);
-
-            $('#itemDetailsModal').modal('hide');
-        });
+        console.log("Updated variables:");
+        console.log("Name:", name);
+        console.log("Calories:", newCal);
+        console.log("Price:", newPrice);
+        console.log("Size:", size);
+        console.log("MenuItemId:", menuItemId);
     });
 
-    function updateModalContent() {
-        $('#itemDetailsBody').html(`
-                <p><strong>${name}</strong></p>
-                <p>Calories: ${newCal}</p>
-                <p>Price: $${newPrice.toFixed(2)}</p>
-                <p>Size: ${size}</p>
-            `);
-    }
+    $('#addToCartBtn').on('click', function () {
+        console.log('Add to Cart button clicked.');
+
+        var cartItem = {
+            MenuItemId: menuItemId,
+            MenuItemName: name,
+            Price: newPrice,
+            Size: size,
+            Quantity: 1
+        };
+
+        console.log('CartItem:', cartItem);
+
+        $.post('@Url.Action("AddToCart", "Cart")', cartItem, function (data) {
+            console.log('Add to Cart request successful.');
+            console.log('Response data:', data);
+        }).fail(function (xhr, status, error) {
+            console.error('Add to Cart request failed.');
+            console.error('Error:', error);
+            console.error('Status:', status);
+            console.error('Response:', xhr.responseText);
+        });
+
+        console.log('Cart:', cart);
+
+        $('#itemDetailsModal').modal('hide');
+    });
+});
 
     function changeSize(newSize) {
         var baseCal = calories;
@@ -140,7 +145,7 @@
             newPrice = medPrice;
             newCal = medCal;
         } else if (newSize === 'large') {
-            newPrice = largePrice; 
+            newPrice = largePrice;
             newCal = largeCal;
         }
 
@@ -152,3 +157,4 @@
     }
 
 </script>
+</body>
