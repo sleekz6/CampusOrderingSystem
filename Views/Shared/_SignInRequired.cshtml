@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null; // Ensure this view does not use a layout
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Access Only</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #ff5722;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Employee Access Only</h2>
+        <p>Please sign in with Employee account to use this feature.</p>
+        <p>Or you may not be assigned to a Restaurant yet</p>
+
+        <a href="/Account/Login">Sign In</a>
+    </div>
+</body>
+</html>
