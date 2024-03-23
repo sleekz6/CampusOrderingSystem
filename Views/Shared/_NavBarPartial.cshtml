@@ -1,4 +1,4 @@
-﻿@* _NavBarPartial.cshtml *@
+﻿@using Microsoft.AspNetCore.Identity
 
 
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
@@ -33,8 +33,14 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Settings" asp-route-customerId="2">Account</a>
-                        <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="PastOrder">Past Orders</a>
+
+                      
+                         @if (User.Identity.IsAuthenticated)
+                {
+                            <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Settings">Account</a>
+
+                            <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="PastOrder">Past Orders</a>
+                }
                         <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Info">Help</a>
                         <a class="dropdown-item" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
                         <a class="dropdown-item" href="#">Action</a>
@@ -43,6 +49,8 @@
                     </div>
                 </li>
             </ul>
+
+            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
 
             @if (User.Identity.IsAuthenticated)
             {
@@ -54,12 +62,11 @@
             }
             else
             {
-                <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                 <style>
                     .nav-link {
-                        margin-right: 10px; /* Adjust as needed */
+                        margin-right: 10px; 
                 </style>
             }
         </div>

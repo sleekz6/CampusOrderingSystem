@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using CampusOrdering.ViewModels;
+using System.Security.Claims;
 
 namespace CampusOrdering.Controllers
 {
@@ -171,5 +172,71 @@ namespace CampusOrdering.Controllers
 
 
 
+
+        public async Task<IActionResult> Settings()
+        {
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userRepository.GetUserById(UserId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+
+        public async Task<IActionResult> EditAccount(string id)
+        {
+            var user = await _userRepository.GetUserById(id);
+           
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+
+            return View(user);
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> SaveAsync(AppUser editedUser)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingCustomer = await _userRepository.GetUserById(editedUser.Id);
+
+                if (existingCustomer != null)
+                {
+
+                    existingCustomer.Name = editedUser.Name;
+                    existingCustomer.Birthdate = editedUser.Birthdate;
+                    existingCustomer.Email = editedUser.Email;
+                    existingCustomer.UserName = editedUser.UserName;
+
+
+
+                }
+
+                _userRepository.Update(existingCustomer);
+
+
+                return RedirectToAction("Settings");
+            }
+
+            return View(editedUser);
+        }
+
+        public ActionResult PastOrder()
+        {
+            var orders = _db.Orders.ToList();
+            return View(orders);
+        }
+
     }
-}
+    }

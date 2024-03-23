@@ -1,4 +1,4 @@
-﻿@model CampusOrdering.Models.Customer
+﻿@model CampusOrdering.Models.AppUser
 
 <style>
     /* Custom CSS styles */
@@ -42,9 +42,9 @@
         cursor: pointer;
     }
 
-    input[type="submit"]:hover {
-        background-color: #0056b3;
-    }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
 
     a.btn-back {
         display: inline-block;
@@ -55,21 +55,26 @@
         border-radius: 5px;
     }
 
-    a.btn-back:hover {
-        background-color: #bbb;
-    }
+        a.btn-back:hover {
+            background-color: #bbb;
+        }
 </style>
 
 <div class="container">
     <h2>Edit Your Settings</h2>
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Save", "User"))
     {
         @Html.AntiForgeryToken()
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name)
             @Html.EditorFor(model => model.Name)
+        </div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.UserName)
+            @Html.EditorFor(model => model.UserName)
         </div>
 
         <div class="form-group">
@@ -82,13 +87,10 @@
             @Html.EditorFor(model => model.Email)
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password)
-            @Html.EditorFor(model => model.Password, new { @type = "password" })
-        </div>
-
-        <input type="submit" value="Save Changes" class="btn-primary" />
+        
+        @Html.HiddenFor(m => m.Id)
+        <button type="submit" class="btn btn-primary">Save</button>
     }
 
-    <a asp-action="Settings" class="btn-back">Back to Settings</a>
+
 </div>

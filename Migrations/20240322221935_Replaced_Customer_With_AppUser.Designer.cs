@@ -4,6 +4,7 @@ using CampusOrdering.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CampusOrdering.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class OrderingContextModelSnapshot : ModelSnapshot
+    [Migration("20240322221935_Replaced_Customer_With_AppUser")]
+    partial class Replaced_Customer_With_AppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,9 +178,6 @@ namespace CampusOrdering.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
-                    b.Property<string>("GuestName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("JSONstring")
                         .IsRequired()
