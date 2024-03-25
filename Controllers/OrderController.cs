@@ -42,7 +42,7 @@ namespace CampusOrdering.Controllers
                 return View("~/Views/Shared/_SignInRequired.cshtml");
             }
             var orders = _context.Orders
-                 .Include(o => o.purchasingCustomer) // Include purchasingCustomer navigation property
+                 .Include(o => o.purchasingUser) // Include purchasingCustomer navigation property
                  .Where(o => o.PurchasedItems
                  .Any(ci => _context.MenuItems
                          .Any(mi => mi.RestaurantId == user.RestaurantID && mi.ItemName == ci.MenuItemName)))
