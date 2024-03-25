@@ -39,6 +39,24 @@ namespace CampusOrdering.Controllers
             return RedirectToAction("Index", "Menu");
         }
 
+        //[RM]
+        //Takes a list from Past Orders and adds it to cart.
+        [HttpPost]
+        public IActionResult AddToCartList(string Json)
+        {
+
+            List<CartItem> cartItems = JsonConvert.DeserializeObject<List<CartItem>>(Json);
+            List<CartItem> _cart = GetCartFromSession();
+            foreach (var cartItem in cartItems)
+            {
+                _cart.Add(cartItem);
+            }
+            SaveCartToSession(_cart);
+
+
+            return RedirectToAction("Index", "Cart");
+        }
+
         private List<CartItem> GetCartFromSession()
         {
             var sessionData = HttpContext.Session.GetString(SessionKey);
@@ -66,6 +84,7 @@ namespace CampusOrdering.Controllers
             var user = await _userRepository.GetUserById(currentUserId);
 
             List<CartItem> cart = GetCartFromSession();
+            
 
             List<CartItem> clonedCart = cart.Select(item => new CartItem
             {
@@ -91,7 +110,7 @@ namespace CampusOrdering.Controllers
                 TotalPrice = cart.Sum(item => item.Price * item.Quantity),
                 PurchasedItems = cart,
                 isServed = false,
-                purchasingUser = model.currUser,
+                purchasingUser = user,
                 GuestName = model.GuestName,
                 JSONstring = JsonConvert.SerializeObject(cart)
             };
@@ -131,7 +150,7 @@ namespace CampusOrdering.Controllers
             {
                 model.currUser = user;
             }
-
+            
             model.ErrorMessage = "Enter a valid credit card with no spaces.";
             return View(model);
         }

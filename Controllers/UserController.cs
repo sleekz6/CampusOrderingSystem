@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using CampusOrdering.ViewModels;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace CampusOrdering.Controllers
 {
@@ -232,9 +233,27 @@ namespace CampusOrdering.Controllers
             return View(editedUser);
         }
 
-        public ActionResult PastOrder()
+        public async Task<IActionResult> PastOrder()
         {
-            var orders = _db.Orders.ToList();
+
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userRepository.GetUserById(currentUserId);
+
+            if (user == null)
+            {
+                return View("~/Views/Shared/_SignInRequired.cshtml");
+            }
+
+
+
+
+            var orders = _db.Orders
+                .Include(o => o.PurchasedItems) // Include PurchasedItems navigation property
+                .Where(o => o.purchasingUser == user) // Filter orders by purchasingUserId
+                .ToList();
+
+
             return View(orders);
         }
 

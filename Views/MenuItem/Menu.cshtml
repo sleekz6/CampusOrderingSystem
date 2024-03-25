@@ -42,6 +42,7 @@
                             data-calories="@menuItem.Calories"
                             data-price="@menuItem.Price"
                             data-size="@menuItem.Size"
+                            data-image="@menuItem.ImageUrl"
                             data-id="@menuItem.Id"
                             >Details</button>
                     </div>
@@ -65,6 +66,7 @@
     var newCal = 0;
     var cart = [];
     var menuItemId = 0;
+    var imageUrl = "";
 
     $(document).ready(function () {
         $('.btn-details').on('click', function () {
@@ -76,6 +78,7 @@
             newPrice = price;
             size = $button.data('size');
             menuItemId = $button.data('id');
+            image = $button.data('image');
 
             // Update modal content dynamically
             updateModalContent();
@@ -93,6 +96,7 @@
                 MenuItemName: name,
                 Price: newPrice,
                 Size: size,
+                ImageURL: image,
                 Quantity: 1
             };
 
