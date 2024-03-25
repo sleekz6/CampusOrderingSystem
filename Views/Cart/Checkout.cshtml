@@ -5,7 +5,6 @@
 
 @Html.ActionLink("Bypass Payment", "ProcessCheckout", "Cart", null, new { @class = "btn btn-primary" })
 
-
  <form asp-action="ProcessCheckout" method="post">
     <div>
         @if (Model.currUser == null){

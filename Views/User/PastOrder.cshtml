@@ -126,7 +126,15 @@
                                     <div>
                                         <img src="@cartItem.ImageURL">
 
-                                        <h3><b>@(count++). @cartItem.MenuItemName - Price: @cartItem.Price, Quantity: @cartItem.Quantity</b></h3>
+                                        <form method="post" asp-controller="Cart" asp-action="AddToCartPastOrder">
+                                            <input type="hidden" name="MenuItemName" value="@cartItem.MenuItemName" />
+                                            <input type="hidden" name="Price" value="@cartItem.Price" />
+                                            <input type="hidden" name="Quantity" value="@cartItem.Quantity" />
+                                            <input type="hidden" name="ImageUrl" value="@cartItem.ImageURL" />
+
+                                            <button type="submit" class="btn btn-outline-light">Add @cartItem.MenuItemName</button>
+                                        </form>
+
                                     </div>
                                 </div>
                             }

@@ -39,6 +39,26 @@ namespace CampusOrdering.Controllers
             return RedirectToAction("Index", "Menu");
         }
 
+        [HttpPost]
+        public IActionResult AddToCartPastOrder(string MenuItemName, decimal Price, int Quantity, string ImageUrl)
+        {
+            CartItem cartItem = new CartItem
+            {
+                MenuItemName = MenuItemName,
+                Price = Price,
+                Quantity = Quantity,
+                ImageURL = ImageUrl
+                
+            };
+
+            List<CartItem> _cart = GetCartFromSession();
+            _cart.Add(cartItem);
+            SaveCartToSession(_cart);
+
+            return RedirectToAction("PastOrder", "User");
+        }
+
+
         //[RM]
         //Takes a list from Past Orders and adds it to cart.
         [HttpPost]
@@ -90,7 +110,9 @@ namespace CampusOrdering.Controllers
             {
                 MenuItemName = item.MenuItemName,
                 Price = item.Price,
-                Quantity = item.Quantity
+                Quantity = item.Quantity,
+                ImageURL = item.ImageURL
+                
                
 
             }).ToList();
