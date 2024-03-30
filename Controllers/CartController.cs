@@ -4,6 +4,7 @@ using CampusOrdering.Models;
 
 using Newtonsoft.Json;
 using System.Security.Claims;
+using CampusOrdering.Interfaces;
 
 namespace CampusOrdering.Controllers
 {
@@ -11,10 +12,12 @@ namespace CampusOrdering.Controllers
     {
         private readonly string SessionKey = "ShoppingCart";
         private readonly AuthDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public CartController(AuthDbContext context)
+        public CartController(AuthDbContext context, IUserRepository userRepository)
         {
             _context = context;
+            _userRepository = userRepository;
         }
 
         public IActionResult Index()
@@ -36,6 +39,44 @@ namespace CampusOrdering.Controllers
             return RedirectToAction("Index", "Menu");
         }
 
+        [HttpPost]
+        public IActionResult AddToCartPastOrder(string MenuItemName, decimal Price, int Quantity, string ImageUrl)
+        {
+            CartItem cartItem = new CartItem
+            {
+                MenuItemName = MenuItemName,
+                Price = Price,
+                Quantity = Quantity,
+                ImageURL = ImageUrl
+                
+            };
+
+            List<CartItem> _cart = GetCartFromSession();
+            _cart.Add(cartItem);
+            SaveCartToSession(_cart);
+
+            return RedirectToAction("PastOrder", "User");
+        }
+
+
+        //[RM]
+        //Takes a list from Past Orders and adds it to cart.
+        [HttpPost]
+        public IActionResult AddToCartList(string Json)
+        {
+
+            List<CartItem> cartItems = JsonConvert.DeserializeObject<List<CartItem>>(Json);
+            List<CartItem> _cart = GetCartFromSession();
+            foreach (var cartItem in cartItems)
+            {
+                _cart.Add(cartItem);
+            }
+            SaveCartToSession(_cart);
+
+
+            return RedirectToAction("Index", "Cart");
+        }
+
         private List<CartItem> GetCartFromSession()
         {
             var sessionData = HttpContext.Session.GetString(SessionKey);
@@ -55,25 +96,23 @@ namespace CampusOrdering.Controllers
             return View();
         }
 
-        public IActionResult ProcessCheckout(CheckoutViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> ProcessCheckoutAsync(CheckoutViewModel model)
         {
-            /*
-            code below finds the current customer that is logged in and assigns them to the order. This will be set up after we have authorization implemented.
-
-             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentCustomer = _context.Customers.SingleOrDefault(c => c.Id.ToString() == currentUserId);
-            */
-
-            var defaultCustomerId = 2;
-            var currentCustomer = _context.Customers.SingleOrDefault(c => c.Id == defaultCustomerId);
+           
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userRepository.GetUserById(currentUserId);
 
             List<CartItem> cart = GetCartFromSession();
+            
 
             List<CartItem> clonedCart = cart.Select(item => new CartItem
             {
                 MenuItemName = item.MenuItemName,
                 Price = item.Price,
-                Quantity = item.Quantity
+                Quantity = item.Quantity,
+                ImageURL = item.ImageURL
+                
                
 
             }).ToList();
@@ -93,7 +132,8 @@ namespace CampusOrdering.Controllers
                 TotalPrice = cart.Sum(item => item.Price * item.Quantity),
                 PurchasedItems = cart,
                 isServed = false,
-                purchasingCustomer = currentCustomer,
+                purchasingUser = user,
+                GuestName = model.GuestName,
                 JSONstring = JsonConvert.SerializeObject(cart)
             };
 
@@ -118,10 +158,21 @@ namespace CampusOrdering.Controllers
         }
 
         [HttpGet]
-        public IActionResult Checkout()
+        public async Task<IActionResult> CheckoutAsync()
         {
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userRepository.GetUserById(currentUserId);
+
+            
             var model = new CheckoutViewModel();
 
+            //Pass on the current user if they're logged in
+            if (user != null)
+            {
+                model.currUser = user;
+            }
+            
             model.ErrorMessage = "Enter a valid credit card with no spaces.";
             return View(model);
         }

@@ -50,7 +50,14 @@
                 {
                     <tr>
                         <td>@order.OrderId</td>
-                        <td>@order.purchasingCustomer.Name</td>
+                       
+                        @if(order.purchasingUser != null){
+                            <td>@order.purchasingUser.Name</td>
+                        }
+                        else{
+                            <td>@order.GuestName</td>
+                        }
+                        
                         <td>
                             @if (!string.IsNullOrEmpty(order.JSONstring))
                             {
@@ -99,7 +106,14 @@
                 {
                     <tr>
                         <td>@order.OrderId</td>
-                        <td>@order.purchasingCustomer.Name</td>
+                        @if (order.purchasingUser != null)
+                        {
+                            <td>@order.purchasingUser.Name</td>
+                        }
+                        else
+                        {
+                            <td>@order.GuestName</td>
+                        }
                         <td>
                             @if (!string.IsNullOrEmpty(order.JSONstring))
                             {

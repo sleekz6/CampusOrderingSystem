@@ -5,8 +5,9 @@ namespace CampusOrdering.Models
 {
     public class CheckoutViewModel
     {
-        [Required]
-        public string UserName { get; set; }
+        //Repalced UserName with GuestName and only people who are not signed in have to enter it.
+        public string? GuestName { get; set; }
+
 
         [Required(ErrorMessage = "Credit card number is required.")]
         public string CardNumber { get; set; }
@@ -16,6 +17,9 @@ namespace CampusOrdering.Models
         public string CVV { get; set; }
 
         public string ErrorMessage { get; set; }
+
+        //Created a User for when a User is logged in. Otherwise it's null.
+        public AppUser? currUser { get; set; }
 
         public bool IsCardNumberValid()
         {

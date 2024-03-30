@@ -107,6 +107,9 @@ namespace CampusOrdering.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
 
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MenuItemName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -130,34 +133,6 @@ namespace CampusOrdering.Migrations
                     b.HasIndex("ReceiptId");
 
                     b.ToTable("CartItem");
-                });
-
-            modelBuilder.Entity("CampusOrdering.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Birthdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customer", (string)null);
                 });
 
             modelBuilder.Entity("CampusOrdering.Models.MenuItem", b =>
@@ -204,6 +179,9 @@ namespace CampusOrdering.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
+                    b.Property<string>("GuestName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("JSONstring")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -217,12 +195,12 @@ namespace CampusOrdering.Migrations
                     b.Property<bool>("isServed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("purchasingCustomerId")
-                        .HasColumnType("int");
+                    b.Property<string>("purchasingUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("purchasingCustomerId");
+                    b.HasIndex("purchasingUserId");
 
                     b.ToTable("Order", (string)null);
                 });
@@ -428,13 +406,11 @@ namespace CampusOrdering.Migrations
 
             modelBuilder.Entity("CampusOrdering.Models.Order", b =>
                 {
-                    b.HasOne("CampusOrdering.Models.Customer", "purchasingCustomer")
+                    b.HasOne("CampusOrdering.Models.AppUser", "purchasingUser")
                         .WithMany()
-                        .HasForeignKey("purchasingCustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("purchasingUserId");
 
-                    b.Navigation("purchasingCustomer");
+                    b.Navigation("purchasingUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
