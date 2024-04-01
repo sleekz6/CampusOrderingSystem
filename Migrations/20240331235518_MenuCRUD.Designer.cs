@@ -4,6 +4,7 @@ using CampusOrdering.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CampusOrdering.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class OrderingContextModelSnapshot : ModelSnapshot
+    [Migration("20240331235518_MenuCRUD")]
+    partial class MenuCRUD
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,9 +198,6 @@ namespace CampusOrdering.Migrations
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("isRemoved")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("isServed")
                         .HasColumnType("bit");

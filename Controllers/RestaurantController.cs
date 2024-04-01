@@ -31,18 +31,24 @@ namespace CampusOrdering.Controllers
             return View(restaurant);
         }
 
-        [HttpPost]
-        public IActionResult Create(Restaurant restaurant)
+        public IActionResult Create()
         {
-            if (ModelState.IsValid)
-            {
-                _context.Restaurants.Add(restaurant);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(restaurant);
+            return View();
         }
 
+        // POST: Restaurant/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create([Bind("Id,Name,LogoUrl")] Restaurant restaurant)
+        {
+            // if (ModelState.IsValid)
+            // {
+            _context.Add(restaurant);
+            _context.SaveChanges();
+            return RedirectToAction("ChooseRestaurant");
+            // }
+            // return View(menuItem);
+        }
         [HttpPost]
         public IActionResult Edit(Restaurant restaurant)
         {
