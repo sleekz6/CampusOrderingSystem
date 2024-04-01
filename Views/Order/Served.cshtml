@@ -17,12 +17,10 @@
     <h2 class="text-center">Restaurant Orders</h2>
     <div class="d-flex justify-content-between m-3">
         <div class="filter">
-            <a class="btn btn-outline-danger" asp-area="" asp-controller="Order" asp-action="Served">Unserved Orders</a>
-
-
+            <a class="btn btn-outline-primary" asp-area="" asp-controller="Order" asp-action="Index">Served Orders</a>
         </div>
         <div class="search">
-            <form method="post" asp-controller="Order" asp-action="SearchOrders">
+            <form method="post" asp-controller="Order" asp-action="SearchUnservedOrders">
                 <input type="text" name="searchTerm" id="search-input" class="form-control" placeholder="Search...">
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
@@ -31,9 +29,9 @@
 
     </div>
 
-    <h3>Waiting Orders</h3>
+    <h3>Served Orders</h3>
 
-    <table id="order-table" class="table table-bordered table-striped">
+    <table id="served-table" class="table table-bordered table-striped">
         <thead class="bg-primary text-light">
             <tr>
                 <th>Order #</th>
@@ -47,18 +45,18 @@
 
             @foreach (var order in Model)
             {
-                @if (@order.isServed == false)
+                @if (@order.isServed == true && order.isRemoved == false)
                 {
                     <tr>
                         <td>@order.OrderId</td>
-                       
-                        @if(order.purchasingUser != null){
+                        @if (order.purchasingUser != null)
+                        {
                             <td>@order.purchasingUser.Name</td>
                         }
-                        else{
+                        else
+                        {
                             <td>@order.GuestName</td>
                         }
-                        
                         <td>
                             @if (!string.IsNullOrEmpty(order.JSONstring))
                             {
@@ -78,7 +76,8 @@
                         </td>
                         <td>@order.PurchaseDateTime</td>
 
-                        <td><a asp-action="ServeOrder" asp-route-orderId="@order.OrderId" class="btn btn-primary">Serve</a></td>
+                        <td><a asp-action="Delete" asp-route-id="@order.OrderId" class="btn btn-danger">Remove</a></td>
+
                     </tr>
 
                 }
