@@ -132,7 +132,7 @@
                                             <input type="hidden" name="Quantity" value="@cartItem.Quantity" />
                                             <input type="hidden" name="ImageUrl" value="@cartItem.ImageURL" />
 
-                                            <button type="submit" class="btn btn-outline-warning">Add @cartItem.MenuItemName</button>
+                                            <button type="submit" class="btn btn-outline-warning">Order @cartItem.MenuItemName</button>
                                         </form>
 
                                     </div>
@@ -155,7 +155,7 @@
                             
                             <form method="post" asp-controller="Cart" asp-action="AddToCartList">
                                 <input type="hidden" name="Json" value="@order.JSONstring" />
-                                <button type="submit" class="btn btn-outline-primary">Add To Cart</button>
+                                <button type="submit" class="btn btn-outline-primary">Order Again</button>
                             </form>
 
                         </div>

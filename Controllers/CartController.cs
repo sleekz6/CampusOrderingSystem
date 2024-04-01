@@ -133,7 +133,7 @@ namespace CampusOrdering.Controllers
                 PurchasedItems = cart,
                 isServed = false,
                 purchasingUser = user,
-                GuestName = model.GuestName,
+                GuestName = user.Name != null ? user.Name: model.GuestName,
                 JSONstring = JsonConvert.SerializeObject(cart)
             };
 

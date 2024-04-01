@@ -10,6 +10,7 @@ namespace CampusOrdering.Models
         public AppUser? purchasingUser { get; set; }
         public string? GuestName   { get; set; }
         public Boolean isServed { get; set; }
+        public Boolean isRemoved { get; set; }
         public String JSONstring { get; set; }
     }
 }

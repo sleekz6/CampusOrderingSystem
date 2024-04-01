@@ -1,13 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Identity
 
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
 
 <style>
     /* CSS for changing color on hover */
     .navbar-nav .nav-link:hover {
         color: #FEA116 !important; /* Bootstrap warning color */
     }
-</style>
 
+</style>
+</head>
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand mr-4" asp-area="" asp-controller="Home" asp-action="Index">Campus Wide Ordering System</a>
@@ -25,9 +30,7 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Restaurant" asp-action="ChooseRestaurant">Menu</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Temp" asp-action="Index">Index</a>
-                </li>
+
                 @if (User.Identity.IsAuthenticated)
                 {
 
@@ -44,41 +47,49 @@
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                     <div class="dropdown-menu">
 
-                      
-                         @if (User.Identity.IsAuthenticated)
-                {
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
                             <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Settings">Account</a>
 
                             <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="PastOrder">Past Orders</a>
-                }
+                        }
                         <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Info">Help</a>
                         <a class="dropdown-item" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
-                        <a class="dropdown-item" href="#">Action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
+                        
                     </div>
+                </li>
+                <li class="nav-item mr-4">
+                    <!-- Added mr-4 for more right margin -->
+                    <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index">
+                        <i class="fa fa-shopping-cart fa-2x"></i> <!-- Use fa-lg for larger size -->
+                    </a>
                 </li>
             </ul>
 
-            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+            <ul class="navbar-nav ml-auto">
 
-            @if (User.Identity.IsAuthenticated)
-            {
 
-                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">
-                    <span class="h6 mb-0">Logout</span>
-                </a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "btn btn-danger py-1 px-2" })
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item mr-4">
+                        <!-- Added mr-4 for more right margin -->
+                    @Html.ActionLink("Register", "Register", "Account", null, new { @class = "btn btn-primary py-1 px-2" })
+                    </li>
+                    <li class="nav-item mr-4">
+                        <!-- Added mr-4 for more right margin -->
+                    @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn btn-success py-1 px-2" })
+                    </li>
+                }
+            </ul>
 
-            }
-            else
-            {
-                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                <style>
-                    .nav-link {
-                        margin-right: 10px; 
-                </style>
-            }
+
         </div>
     </div>
 </nav>
