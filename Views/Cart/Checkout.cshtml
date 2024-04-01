@@ -3,9 +3,9 @@
 <link rel="stylesheet" href="style.css">
 <h2>Checkout</h2>
 
-@Html.ActionLink("Bypass Payment", "ProcessCheckout", "Cart", null, new { @class = "btn btn-primary" })
+@Html.ActionLink("Bypass Payment", "ThankYou", "Cart", null, new { @class = "btn btn-primary" })
 
- <form asp-action="ProcessCheckout" method="post">
+ <!-- <form asp-action="ProcessCheckout" method="post">
     <div>
         @if (Model.currUser == null){
            <label for="GuestName">Name:</label>
@@ -30,7 +30,7 @@
     </div>
 
     <button type="submit">Submit Order</button>
-</form>
+</form> -->
 
 <script src="https://www.paypal.com/sdk/js?client-id=BAAAI1tqw1eFgo_wkjeDRjNV_6-upnuL8TSVg1O0YHatM87Ov-hcVCCFEZwfdVtQdynFDtpfwcWSteHAN0&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
 <div id="paypal-container-KHX67JPVXZZUE"></div>

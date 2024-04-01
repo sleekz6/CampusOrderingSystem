@@ -10,6 +10,7 @@ namespace CampusOrdering.Models
         public string ImageUrl { get; set; }
         public int Calories { get; set; }
         public string Size { get; set; }
+        public string Category { get; set; }
         public Restaurant Restaurant { get; set; }
     }
 }

@@ -1,7 +1,13 @@
 ﻿﻿@Model Restaurant
 <head>
     <link rel="stylesheet" href="~/css/mycsstheme.css" />
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
+@{
+    ViewData["Title"] = "Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <div class="center-content">
     <h2>Menu for @Model.Name</h2>
@@ -30,10 +36,29 @@
         </div>
     </div>
 
-    <div class="row">
+ <div>
+    <!-- Category tabs -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" onclick="filterItems('All')">All</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" onclick="filterItems('Drink')">Drink</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" onclick="filterItems('Dessert')">Dessert</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" onclick="filterItems('Entree')">Entree</a>
+        </li>
+    </ul>
+
+<!-- Menu item cards -->
+    <div class="row menu-items">
         @foreach (var menuItem in Model.Menu)
         {
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4 menu-item" data-category="@menuItem.Category">
+                <!-- Wrap each menu item card in a column -->
                 <div class="card">
                     <img src="@menuItem.ImageUrl" class="card-img-top" alt="@menuItem.ItemName">
                     <div class="card-body">
@@ -44,7 +69,8 @@
                             data-size="@menuItem.Size"
                             data-image="@menuItem.ImageUrl"
                             data-id="@menuItem.Id"
-                            >Details</button>
+                            data-category="@menuItem.Category"
+                        >Details</button>
                     </div>
                 </div>
             </div>
@@ -55,6 +81,7 @@
 <!-- Include jQuery and Bootstrap JavaScript -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"></script>
+
 
 <script>
     // JavaScript to handle the click event and populate modal content
@@ -79,6 +106,7 @@
             size = $button.data('size');
             menuItemId = $button.data('id');
             image = $button.data('image');
+            category = $button.data('category');
 
             // Update modal content dynamically
             updateModalContent();
@@ -116,8 +144,18 @@
                     <p>Calories: ${newCal}</p>
                     <p>Price: $${newPrice.toFixed(2)}</p>
                     <p>Size: ${size}</p>
+                    <p>Category: ${category}</p>
                 `);
     }
+
+    function filterItems(category) {
+        $('.menu-item').hide(); // Hide all menu item columns
+    if (category === 'All') {
+        $('.menu-item').show(); // Show all menu item columns if "All" tab is selected
+    } else {
+        $('.menu-item[data-category="' + category + '"]').show(); // Show menu item columns with selected category
+    }
+}
 
     function changeSize(newSize) {
         var baseCal = calories;
