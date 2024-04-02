@@ -13,11 +13,13 @@ namespace CampusOrdering.Controllers
         private readonly string SessionKey = "ShoppingCart";
         private readonly AuthDbContext _context;
         private readonly IUserRepository _userRepository;
+        private readonly ILogger<CartController> _logger;
 
-        public CartController(AuthDbContext context, IUserRepository userRepository)
+        public CartController(AuthDbContext context, IUserRepository userRepository, ILogger<CartController> logger)
         {
             _context = context;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -96,65 +98,76 @@ namespace CampusOrdering.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ProcessCheckoutAsync(CheckoutViewModel model)
+       [HttpGet]
+        public async Task<IActionResult> ThankYou()
         {
-           
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userRepository.GetUserById(currentUserId);
-
-            List<CartItem> cart = GetCartFromSession();
-            
-
-            List<CartItem> clonedCart = cart.Select(item => new CartItem
+            try
             {
-                MenuItemName = item.MenuItemName,
-                Price = item.Price,
-                Quantity = item.Quantity,
-                ImageURL = item.ImageURL
-                
-               
+                _logger.LogInformation("ThankYou action method called.");
 
-            }).ToList();
+                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userRepository.GetUserById(currentUserId);
 
-            Receipt receipt = new Receipt
+                List<CartItem> cart = GetCartFromSession();
+
+
+                List<CartItem> clonedCart = cart.Select(item => new CartItem
+                {
+                    MenuItemName = item.MenuItemName,
+                    Price = item.Price,
+                    Quantity = item.Quantity,
+                    ImageURL = item.ImageURL
+
+
+
+                }).ToList();
+
+                Receipt receipt = new Receipt
+                {
+                    PurchaseDateTime = DateTime.Now,
+                    PurchasedItems = cart,
+                    TotalPrice = cart.Sum(item => item.Price * item.Quantity),
+                    JSONForReceipt = JsonConvert.SerializeObject(cart)
+                };
+
+                Order order = new Order
+                {
+
+                    PurchaseDateTime = DateTime.Now,
+                    TotalPrice = cart.Sum(item => item.Price * item.Quantity),
+                    PurchasedItems = cart,
+                    isServed = false,
+                    purchasingUser = user,
+                    GuestName = "Guest",
+                    JSONstring = JsonConvert.SerializeObject(cart)
+                };
+
+                _context.Receipts.Add(receipt);
+
+                _context.Orders.Add(order);
+
+                _context.SaveChanges();
+
+                TimeSpan estimate = CalculateOrderEstimate(GetCartFromSession(), GetCartFromSession().Count());
+
+                ViewBag.OrderEstimate = estimate;
+                // Validate the model
+
+                // Perform payment processing (e.g., using a payment gateway)
+
+                // Clear the cart after successful checkout
+                ClearCart();
+
+                return View();
+            }
+            catch (Exception ex)
             {
-                PurchaseDateTime = DateTime.Now,
-                PurchasedItems = cart,
-                TotalPrice = cart.Sum(item => item.Price * item.Quantity),
-                JSONForReceipt = JsonConvert.SerializeObject(cart)
-            };
-
-            Order order = new Order
-            {
-
-                PurchaseDateTime = DateTime.Now,
-                TotalPrice = cart.Sum(item => item.Price * item.Quantity),
-                PurchasedItems = cart,
-                isServed = false,
-                purchasingUser = user,
-                GuestName = user.Name != null ? user.Name: model.GuestName,
-                JSONstring = JsonConvert.SerializeObject(cart)
-            };
-
-            _context.Receipts.Add(receipt);
-
-            _context.Orders.Add(order);
-
-            _context.SaveChanges();
-
-            TimeSpan estimate = CalculateOrderEstimate(GetCartFromSession(), GetCartFromSession().Count());
-
-            ViewBag.OrderEstimate = estimate;
-            // Validate the model
-
-            // Perform payment processing (e.g., using a payment gateway)
-
-            // Clear the cart after successful checkout
-            ClearCart();
+                _logger.LogError(ex, "An error occurred in the ThankYou action.");
+                throw;
+            }
 
             // Redirect to a Thank You page or another appropriate page
-            return RedirectToAction("ThankYou", new {estimateTime = estimate});
+            //return RedirectToAction("ThankYou", new {estimateTime = estimate});
         }
 
         [HttpGet]
@@ -213,11 +226,11 @@ namespace CampusOrdering.Controllers
             return View(receipt);
         }
 
-        public IActionResult ThankYou(TimeSpan estimateTime)
+        /*  public IActionResult ThankYou(TimeSpan estimateTime)
         {
             ViewBag.OrderEstimate = estimateTime;
             return View();
-        }
+        } */
 
         public TimeSpan CalculateOrderEstimate(List<CartItem> cart, int additionalItems)
         {

@@ -2,6 +2,7 @@
 using CampusOrdering.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CampusOrdering.Controllers
 {
@@ -49,6 +50,9 @@ namespace CampusOrdering.Controllers
         // GET: MenuItem/Create
         public IActionResult Create()
         {
+            var restaurants = _context.Restaurants; // Or however you fetch your restaurants
+            ViewBag.Restaurants = new SelectList(restaurants, "Id", "Name"); // Adjust "Id" and "Name" as per your Restaurant model properties
+            return View();
             return View();
         }
 

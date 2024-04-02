@@ -14100,6 +14100,20 @@ a.list-group-item-danger.active {
     text-align: center;
 }
 
+.card-container {
+    height: 100%; /* Set a fixed height for the card container */
+}
+
+.menu-items {
+    display: flex; /* Use flexbox to align the cards horizontally */
+    flex-wrap: wrap; /* Allow the cards to wrap to the next row */
+}
+
+    .menu-items .col-md-4 {
+        flex: 0 0 33.333%; /* Ensure each card occupies one-third of the row */
+        max-width: 33.333%; /* Ensure each card occupies one-third of the row */
+    }
+
     .menu-item img {
         max-width: 100%; /* Set maximum width to 100% of the container */
         max-height: 200px; /* Set maximum height as needed */

@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="style.css">
 <h2>Checkout</h2>
 
-@Html.ActionLink("Bypass Payment", "ThankYou", "Cart", null, new { @class = "btn btn-primary" })
+<a href="@Url.Action("ProcessCheckoutAsync", "CartController")" class="btn btn-primary">Bypass Payment</a>
 
  <!-- <form asp-action="ProcessCheckout" method="post">
     <div>
@@ -30,13 +30,15 @@
     </div>
 
     <button type="submit">Submit Order</button>
-</form> -->
+</form> 
 
 <script src="https://www.paypal.com/sdk/js?client-id=BAAAI1tqw1eFgo_wkjeDRjNV_6-upnuL8TSVg1O0YHatM87Ov-hcVCCFEZwfdVtQdynFDtpfwcWSteHAN0&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
 <div id="paypal-container-KHX67JPVXZZUE"></div>
 <script>
   paypal.HostedButtons({
     hostedButtonId: "KHX67JPVXZZUE",
+    // Set the total amount dynamically
   }).render("#paypal-container-KHX67JPVXZZUE")
 </script>
 
+-->

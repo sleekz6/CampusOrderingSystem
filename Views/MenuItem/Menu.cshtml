@@ -36,7 +36,7 @@
         </div>
     </div>
 
- <div>
+<div>
     <!-- Category tabs -->
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -52,14 +52,16 @@
             <a class="nav-link" onclick="filterItems('Entree')">Entree</a>
         </li>
     </ul>
+</div>
 
 <!-- Menu item cards -->
-    <div class="row menu-items">
-        @foreach (var menuItem in Model.Menu)
-        {
-            <div class="col-md-4 mb-4 menu-item" data-category="@menuItem.Category">
-                <!-- Wrap each menu item card in a column -->
-                <div class="card">
+<div class="row menu-items">
+    @foreach (var menuItem in Model.Menu)
+    {
+        <div class="col-md-4 mb-4">
+            <!-- Wrap each menu item card in a container with fixed height -->
+            <div class="card-container">
+                <div class="card h-100 d-flex flex-column justify-content-between">
                     <img src="@menuItem.ImageUrl" class="card-img-top" alt="@menuItem.ItemName">
                     <div class="card-body">
                         <button type="button" class="btn btn-details"
@@ -74,13 +76,17 @@
                     </div>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
+<div class="text-center">
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</div>
 </div>
 
 <!-- Include jQuery and Bootstrap JavaScript -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
 
 <script>
@@ -136,6 +142,13 @@
 
             $('#itemDetailsModal').modal('hide');
         });
+
+        // Attach click event handler to tab links
+        $('.nav-link').on('click', function() {
+    console.log('Tab clicked');
+    var category = $(this).text(); // Get the category from the tab text
+    filterItems(category); // Call the filterItems function with the selected category
+});
     });
 
     function updateModalContent() {
@@ -149,13 +162,18 @@
     }
 
     function filterItems(category) {
-        $('.menu-item').hide(); // Hide all menu item columns
-    if (category === 'All') {
-        $('.menu-item').show(); // Show all menu item columns if "All" tab is selected
-    } else {
-        $('.menu-item[data-category="' + category + '"]').show(); // Show menu item columns with selected category
-    }
+    $('.menu-items').children().each(function() {
+        var $cardContainer = $(this);
+        var cardCategory = $cardContainer.find('.btn-details').data('category');
+        if (category === 'All' || cardCategory === category) {
+            $cardContainer.show().appendTo('.menu-items');
+        } else {
+            $cardContainer.hide();
+        }
+    });
 }
+
+
 
     function changeSize(newSize) {
         var baseCal = calories;
@@ -181,5 +199,4 @@
         // Update modal content dynamically
         updateModalContent();
     }
-
 </script>

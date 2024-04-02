@@ -1,4 +1,5 @@
 ﻿@model List<Restaurant>  
+@using Microsoft.AspNetCore.Identity
 
 <head>
     <link rel="stylesheet" href="~/css/menu.css" />
@@ -20,4 +21,6 @@
             </div>
         }
     </div>
-    }
+    <div class="text-center">
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+    </div>
