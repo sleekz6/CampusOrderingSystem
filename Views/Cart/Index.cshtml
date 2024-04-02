@@ -30,13 +30,11 @@
 
     <p>Total Price: @Model.Sum(item => item.Price * item.Quantity).ToString("N2")</p>
     <p>Estimated Order Time: @ViewBag.OrderEstimate</p>
-    <a class="btn btn-primary" href="@Url.Action("Checkout", "Cart")">Checkout</a>
 }
 
 @{ ViewBag.TotalAmount = Model.Sum(item => item.Price * item.Quantity).ToString("N2"); }
 
 <div class="checkout-section">
-    <a href="@Url.Action("ProcessCheckoutAsync", "CartController")" class="btn btn-primary">Bypass Payment</a>
 
     <div id="paypal-button-container"></div>
 
