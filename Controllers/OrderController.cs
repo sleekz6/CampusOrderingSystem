@@ -100,7 +100,7 @@ namespace CampusOrdering.Controllers
 
             _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Served");
         }
 
         [HttpPost]

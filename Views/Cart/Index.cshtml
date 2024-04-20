@@ -36,14 +36,14 @@
 @{ ViewBag.TotalAmount = Model.Sum(item => item.Price * item.Quantity).ToString("N2"); }
 
 <div class="checkout-section">
-    <a href="@Url.Action("ProcessCheckoutAsync", "CartController")" class="btn btn-primary">Bypass Payment</a>
+    <a href="@Url.Action("ThankYou", "Cart")" class="btn btn-primary">Bypass Payment</a>
 
     <div id="paypal-button-container"></div>
 
 <script src="https://www.paypal.com/sdk/js?client-id=AWAmiCGfbvkt2e6F7L6MiJxPC39J33TVYvMYz-2j1abC7wVZC1vHKESDCFXNn7oFu1lkHvBMWA59BfwV&currency=USD"></script>
 <script>
     paypal.Buttons({
-    createOrder: function(data, actions) {
+    createOrder: function(data, actions) {                GuestName = user.Name != null ? user.Name: model.GuestName,
         // Calculate total order amount
         var totalAmount = calculateTotalAmount();
 
