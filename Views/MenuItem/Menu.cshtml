@@ -80,7 +80,10 @@
     }
 </div>
 <div class="text-center">
-        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-outline-success" })
+        <a href="@Url.Action("Create", "MenuItem")" class="btn btn-primary">Create Item</a>
+        <a href="@Url.Action("Delete", "MenuItem", new { restaurantId = Model.Id })" class="btn btn-primary">Delete Item</a>
+
+
 </div>
 </div>
 

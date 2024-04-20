@@ -53,7 +53,6 @@ namespace CampusOrdering.Controllers
             var restaurants = _context.Restaurants; // Or however you fetch your restaurants
             ViewBag.Restaurants = new SelectList(restaurants, "Id", "Name"); // Adjust "Id" and "Name" as per your Restaurant model properties
             return View();
-            return View();
         }
 
         // POST: MenuItem/Create
@@ -119,36 +118,33 @@ namespace CampusOrdering.Controllers
             return View(menuItem);
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int restaurantId)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var menuItems = _context.MenuItems.Where(item => item.RestaurantId == restaurantId).ToList();
 
-            var menuItem = GetItem(id.Value);
-            if (menuItem == null)
-            {
-                return NotFound();
-            }
+            ViewBag.RestaurantId = restaurantId;
 
-            return View(menuItem);
+            // Pass the menu items to the view
+            return View(menuItems);
         }
 
         // POST: MenuItem/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int menuItemId, int restID)
         {
-            var menuItem = GetItem(id);
+            // Retrieve the menu item from the database
+            var menuItem = _context.MenuItems.Find(menuItemId);
             if (menuItem == null)
             {
                 return NotFound();
             }
 
+            // Delete the menu item
             _context.MenuItems.Remove(menuItem);
             _context.SaveChanges();
-            return RedirectToAction("Menu", new { restID = menuItem.RestaurantId });
+
+            // Redirect back to the Menu page for the same restaurant
+            return RedirectToAction("Menu", new { restID = restID });
         }
 
         private bool MenuItemExists(int id)
