@@ -2893,7 +2893,8 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 		}
 	}
 
-	// Compile and execute a filtering function if one is not provided
+	// Compile and execute a 
+ng function if one is not provided
 	// Provide `match` to avoid retokenization if we modified the selector above
 	( compiled || compile( selector, match ) )(
 		seed,

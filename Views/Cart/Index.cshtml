@@ -2,6 +2,11 @@
 
 <link rel="stylesheet" href="~/css/mycsstheme.css">
 
+@if (Model.Count == 0)
+{
+    <a href="@Url.Action("ChooseRestaurant", "Restaurant")" style="padding:5px; margin:20px;" class="btn btn-primary">Cart is Empty!</a>
+}
+
 @if (Model.Count > 0)
 {
     <h2>Your Shopping Cart</h2>
@@ -32,60 +37,53 @@
     <p>Estimated Order Time: @ViewBag.OrderEstimate</p>
 }
 
-@{ ViewBag.TotalAmount = Model.Sum(item => item.Price * item.Quantity).ToString("N2"); }
-
+@{
+    ViewBag.TotalAmount = Model.Sum(item => item.Price * item.Quantity).ToString("N2");
+}
+@if (Model.Count > 0)
+{
 <div class="checkout-section">
 
     <div id="paypal-button-container"></div>
 
-<script src="https://www.paypal.com/sdk/js?client-id=AWAmiCGfbvkt2e6F7L6MiJxPC39J33TVYvMYz-2j1abC7wVZC1vHKESDCFXNn7oFu1lkHvBMWA59BfwV&currency=USD"></script>
-<script>
-    paypal.Buttons({
-    createOrder: function(data, actions) {
-        // Calculate total order amount
-        var totalAmount = calculateTotalAmount();
+    <script src="https://www.paypal.com/sdk/js?client-id=AWAmiCGfbvkt2e6F7L6MiJxPC39J33TVYvMYz-2j1abC7wVZC1vHKESDCFXNn7oFu1lkHvBMWA59BfwV&currency=USD"></script>
+    <script>
+        paypal.Buttons({
+            createOrder: function (data, actions) {
+                // Calculate total order amount
+                var totalAmount = calculateTotalAmount();
 
-        // Create an order with PayPal Orders API
-        return actions.order.create({
-            purchase_units: [{
-                amount: {
-                    value: totalAmount.toFixed(2), // Format amount to two decimal places
-                    currency_code: 'USD'
-                }
-            }]
-        });
-    },
-    onApprove: function(data, actions) {
-            // Make an HTTP GET request to ThankYou action
-            window.location.href = '@Url.Action("ThankYou", "Cart")';
-        },
-    onCancel: function(data) {
-        // Handle when the user cancels the payment
-        console.log('Payment cancelled');
-    },
-    onError: function(err) {
-        // Handle errors
-        console.error('Error occurred:', err);
-    }
-}).render('#paypal-button-container');
+                // Create an order with PayPal Orders API
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: totalAmount.toFixed(2), // Format amount to two decimal places
+                            currency_code: 'USD'
+                        }
+                    }]
+                });
+            },
+            onApprove: function (data, actions) {
+                // Make an HTTP GET request to ThankYou action
+                window.location.href = '@Url.Action("ThankYou", "Cart")';
+            },
+            onCancel: function (data) {
+                // Handle when the user cancels the payment
+                console.log('Payment cancelled');
+            },
+            onError: function (err) {
+                // Handle errors
+                console.error('Error occurred:', err);
+            }
+        }).render('#paypal-button-container');
 
-    var totalAmount = parseFloat(@Html.Raw(Json.Serialize(ViewBag.TotalAmount)));
+        var totalAmount = parseFloat(@Html.Raw(Json.Serialize(ViewBag.TotalAmount)));
 
-    // Function to calculate the total order amount based on the items in the shopping cart
-    function calculateTotalAmount() {
-        console.log(totalAmount);
-        return totalAmount;
-    }
-</script>
+        // Function to calculate the total order amount based on the items in the shopping cart
+        function calculateTotalAmount() {
+            console.log(totalAmount);
+            return totalAmount;
+        }
+    </script>
 </div>
-
-@if (Model.Count == 0)
-{
-    <div class="center-content">
-        <link rel="stylesheet" href="~/css/mycsstheme.css">
-        @Html.ActionLink("Cart is Empty!", "ChooseRestaurant", "Restaurant", null, new { @class = "btn btn-primary" })
-    </div>
 }
-
-
-

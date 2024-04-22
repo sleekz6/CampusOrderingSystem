@@ -3,9 +3,9 @@
 <link rel="stylesheet" href="style.css">
 <h2>Checkout</h2>
 
-<a href="@Url.Action("ProcessCheckoutAsync", "CartController")" class="btn btn-primary">Bypass Payment</a>
+<a href="@Url.Action("ThankYou", "Cart")" class="btn btn-primary">Bypass Payment</a>
 
- <!-- <form asp-action="ProcessCheckout" method="post">
+<form asp-action="ProcessCheckout" method="post">
     <div>
         @if (Model.currUser == null){
            <label for="GuestName">Name:</label>
@@ -41,4 +41,3 @@
   }).render("#paypal-container-KHX67JPVXZZUE")
 </script>
 
--->

@@ -151,11 +151,7 @@ namespace CampusOrdering.Controllers
                 TimeSpan estimate = CalculateOrderEstimate(GetCartFromSession(), GetCartFromSession().Count());
 
                 ViewBag.OrderEstimate = estimate;
-                // Validate the model
-
-                // Perform payment processing (e.g., using a payment gateway)
-
-                // Clear the cart after successful checkout
+                
                 ClearCart();
 
                 return View();
