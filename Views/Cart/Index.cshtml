@@ -33,6 +33,7 @@
 }
 
 @{ ViewBag.TotalAmount = Model.Sum(item => item.Price * item.Quantity).ToString("N2"); }
+<a href="@Url.Action("Checkout", "Cart")" class="btn btn-primary">Checkout</a>
 
 <div class="checkout-section">
 
@@ -84,6 +85,7 @@
     <div class="center-content">
         <link rel="stylesheet" href="~/css/mycsstheme.css">
         @Html.ActionLink("Cart is Empty!", "ChooseRestaurant", "Restaurant", null, new { @class = "btn btn-primary" })
+
     </div>
 }
 

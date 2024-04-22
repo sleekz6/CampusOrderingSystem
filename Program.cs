@@ -15,7 +15,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=FoodOrderingDB;Trusted_Connection=True;MultipleActiveResultSets=true"));
+    options.UseSqlServer("Server=tcp:testingwebsitedb.database.windows.net,1433;Initial Catalog=foodorderingdb;Persist Security Info=False;User ID=voltro33;Password=Password123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
 
 //builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<AuthDbContext>();
